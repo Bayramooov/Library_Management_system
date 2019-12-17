@@ -1,0 +1,144 @@
+/*--------------loginPage---------------*/
+
+.loginFrame {
+	-fx-background-color: #ffffff;
+}
+
+#login_userIDField {
+	-fx-background-radius: 30;
+}
+
+#login_passwordField {
+	-fx-background-radius: 30;
+}
+
+#login_loginButton {
+	-fx-background-color: #1F487E;
+	-fx-background-radius: 30;
+	-fx-cursor: hand;
+} #login_loginButton:hover {
+	-fx-background-color: #416BA2;
+} #login_loginButton:pressed {
+	-fx-scale-y: 0.98;
+	-fx-scale-x: 0.98;
+}
+
+/*---------------------MainPage---------------------*/
+
+.main_headerBorder {
+	-fx-background-color: #FFFFFF;
+	-fx-effect: dropshadow(three-pass-box, #333333, 10, 0, 0, 0);
+}
+
+#headerBorder_logoutButton {
+	-fx-background-color: #ffffff;
+	-fx-background: transparent;
+	-fx-effect: dropshadow(three-pass-box, #cccccc, 7, 0, 0, 0);
+	-fx-cursor: hand;
+} #headerBorder_logoutButton:hover {
+	-fx-background-color: #FAFAFA;
+	-fx-scale-y: 0.83;
+	-fx-scale-x: 0.83;
+} #headerBorder_logoutButton:pressed {
+	-fx-scale-y: 0.8;
+	-fx-scale-x: 0.8;
+}
+
+#headerBorder_addButton {
+	-fx-background-color: #ffffff;
+	-fx-background: transparent;
+	-fx-effect: dropshadow(three-pass-box, #cccccc, 7, 0, 0, 0);
+	-fx-cursor: hand;
+} #headerBorder_addButton:hover {
+	-fx-background-color: #FAFAFA;
+	-fx-scale-y: 1.03;
+	-fx-scale-x: 1.03;
+} #headerBorder_addButton:pressed {
+	-fx-scale-y: 1;
+	-fx-scale-x: 1;
+}
+
+.main_leftBorder {
+	-fx-background-image: url("/main/img/bgMain.jpg");
+	-fx-background-size: 100% 100%;
+}
+
+.leftBorder_buttons {
+	-fx-background-color: transparent;
+	-fx-cursor: hand;
+} .leftBorder_buttons:hover {
+	-fx-background-color: #1F487E;
+} .leftBorder_buttons:pressed {
+	-fx-scale-y: 0.98;
+	-fx-scale-x: 0.98;
+
+}
+
+.leftBorder_buttons:active {
+	-fx-background-color: #1F487E;
+	-fx-scale-y: 1.3;
+	-fx-scale-x: 1.3;
+
+}
+
+
+.leftBorder_buttons_pressed {
+	-fx-background-color: #1F487E;	
+}
+
+.centerBorder_block {
+	-fx-background-color: #FFFFFF;
+	-fx-background-radius: 7;
+	-fx-effect: dropshadow(three-pass-box, #cccccc, 20, 0, 0, 0);
+}
+
+/***************************************************************/
+
+
+#UserViewPanel {
+	-fx-background-color: #F5F8FD;
+}
+
+.backgroundPane {
+	-fx-background-color:  #ffffff;
+	-fx-background-radius:  8;
+	-fx-effect:  dropshadow(three-pass-box, #cccccc, 20, 0, 0, 0);
+}
+
+.newForms {
+	-fx-background-radius: 30;
+}
+
+#newUserType {
+	-fx-background-color: #ffffff;
+	-fx-border-color: #C9C9C9;
+	-fx-border-radius: 30;
+}
+
+.createButton {
+	-fx-background-radius: 30;
+	-fx-background-color: #98D963;
+	-fx-effect: dropshadow(three-pass-box, #cccccc, 20, 0, 0, 0);
+} .createButton:hover {
+	-fx-cursor: hand;
+	-fx-background-color: #CEEF75;
+	-fx-scale-y: 1.04;
+	-fx-scale-x: 1.04;
+} .createButton:pressed {
+	-fx-scale-y: 1.0;
+	-fx-scale-x: 1.0;
+}
+
+.cancelButton {
+	-fx-background-radius: 30;
+	-fx-background-color: #E35950;
+	-fx-effect: dropshadow(three-pass-box, #cccccc, 20, 0, 0, 0);
+} .cancelButton:hover {
+	-fx-cursor: hand;
+	-fx-background-color: #CE3E34;
+	-fx-scale-y: 1.04;
+	-fx-scale-x: 1.04;
+} .cancelButton:pressed {
+	-fx-scale-y: 1.0;
+	-fx-scale-x: 1.0;
+}
