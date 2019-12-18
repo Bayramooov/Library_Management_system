@@ -5,6 +5,7 @@ import database.BorrowedBook;
 import database.Librarian;
 import database.UserType;
 
+import javax.swing.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -29,25 +30,20 @@ public  class Funcs {
             return 3;
     }
 
-    public static UserType GetUserType(Connection con,int ID)throws Exception
+    public static UserType GetUserType(int typeId)
     {
-        String command="Select user_type from Accounts where ID=?";
-        PreparedStatement ps=con.prepareStatement(command);
-        ps.setInt(1,ID);
-        ResultSet rs=ps.executeQuery();
-        if(rs.next())
-        {
-            int type=rs.getInt("user_type");
-            if(type==1)
+            if(typeId==1)
             {
                 return UserType.Librarian;
             }
-            else
+            else if(typeId==2)
             {
                 return UserType.Reader;
             }
-        }
-        return null;
+            else
+            {
+                return UserType.Admin;
+            }
     }
 
     public static boolean IsAlreadyRegistered(Connection conn,String userId) throws Exception
@@ -80,14 +76,13 @@ public  class Funcs {
         st.executeUpdate(addForeignKey);
     }
 
-    public static int LoginUser(Connection conn,String userId,String password,UserType type)throws Exception
+    public static User LoginUser(Connection conn,String userId,String password)throws Exception
     {
-            if(IsEmptyOrNull(userId) || IsEmptyOrNull(password)||type==null)
+            if(IsEmptyOrNull(userId) || IsEmptyOrNull(password))
             {
                 throw new Exception("Wrong credentials!");
             }
-            String getUserFromDatabase="Select ID,user_id,password,user_type as 'type'" +
-                    " from Accounts where user_id=?";
+            String getUserFromDatabase="SELECT * FROM Accounts WHERE user_id=?";
             PreparedStatement ps=conn.prepareStatement(getUserFromDatabase);
             ps.setString(1,userId);
             ResultSet rs=ps.executeQuery();
@@ -95,13 +90,14 @@ public  class Funcs {
            {
                if(!IsEmptyOrNull(rs.getString("user_id")))
                {
-                   if(rs.getString("password").compareTo(password)==0 && rs.getInt("type")==GetTypeID(type))
+                   if(rs.getString("password").compareTo(password)==0)
                    {
-                       return rs.getInt("ID");
+                       return  new User(rs.getInt("ID"),rs.getString("name"),
+                               rs.getString("user_id"),GetUserType(rs.getInt("user_type")));
                    }
                }
            }
-        return -1;
+        return null;
     }
 
     public static ArrayList<Book> GetBooks(Connection con)throws Exception
@@ -430,10 +426,10 @@ public  class Funcs {
         Statement st=con.createStatement();
         ResultSet rs=st.executeQuery(getBlockedUsers);
         ArrayList<User> users=new ArrayList<User>();
-
         while(rs.next())
         {
-            users.add(new User(rs.getInt("ID"),rs.getString("name"),rs.getString("user_id")));
+            users.add(new User(rs.getInt("ID"),rs.getString("name"),
+                    rs.getString("user_id"),GetUserType(rs.getInt("user_type"))));
         }
         return users;
     }
