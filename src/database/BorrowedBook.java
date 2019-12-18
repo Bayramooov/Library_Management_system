@@ -4,10 +4,10 @@ import java.time.LocalDate;
 
 public class BorrowedBook {
     public Book Book;
-    int BookId;
-    int BorrowerId;
-    String UserName;
-    String UserId;
+    public int BookId;
+    public int BorrowerId;
+    public String UserName;
+    public String UserId;
     public LocalDate BorrowedDate;
     public LocalDate ReturnDate;
 
@@ -21,4 +21,7 @@ public class BorrowedBook {
         this.UserName=userName;
         this.UserId=userId;
     }
+
+
+
 }

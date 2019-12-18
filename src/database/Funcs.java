@@ -86,9 +86,11 @@ public  class Funcs {
                {
                    if(rs.getString("password").compareTo(password)==0)
                    {
-                       return  new User(rs.getInt("ID"),rs.getString("name"),
+                       User user=new User(rs.getInt("ID"),rs.getString("name"),
                                rs.getString("user_id"),rs.getString("password"),
                                GetUserType(rs.getInt("user_type")));
+                       user.setBlocked(rs.getBoolean("blocked"));
+                       return  user;
                    }
                }
            }
