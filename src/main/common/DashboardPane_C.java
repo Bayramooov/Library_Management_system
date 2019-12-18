@@ -1,6 +1,12 @@
 package main.common;
+import database.Book;
+import database.Funcs;
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
+import main.DataCollection;
+
+import java.util.ArrayList;
+import java.util.Hashtable;
 
 public class DashboardPane_C {
     //  INITIALIZATION OF ALL THE LABELS...
@@ -29,17 +35,20 @@ public class DashboardPane_C {
 
     //  INITIALIZATION OF ALL THE LABELS...
     //  WILL BE LOADED FROM THE DATABASE LATER...
-    public void initialize() {
-        totalBooks.setText("21.2K");
-        borrowedBooks.setText("7.3K");
-        subjects.setText("372");
-        types.setText("1.72K");
-        readers.setText("2.8K");
-        booksName_1.setText("HTML5 - Up and Running");
-        authorName_1.setText("Mark Pilgrim");
-        booksName_2.setText("CSS - in Depth");
-        authorName_2.setText("Keith J. Grant");
-        booksName_3.setText("Java - How to program");
-        authorName_3.setText("Paul Deitel & Harvey Deitel");
+    public void initialize() throws Exception {
+        Hashtable<String, Integer> stats = Funcs.GetCountStatistics(Login.con);
+
+        totalBooks.setText(stats.get("allBooks").toString());
+        borrowedBooks.setText(stats.get("borrowedBooks").toString());
+        subjects.setText(stats.get("subjects").toString());
+        types.setText(stats.get("types").toString());
+        readers.setText(stats.get("readers").toString());
+        ArrayList<Book> top3Books = Funcs.GetTop3Books(Login.con);
+        booksName_1.setText(top3Books.get(0).Title);
+        authorName_1.setText(top3Books.get(0).Author);
+        booksName_2.setText(top3Books.get(1).Title);
+        authorName_2.setText(top3Books.get(1).Author);
+        booksName_3.setText(top3Books.get(2).Title);
+        authorName_3.setText(top3Books.get(2).Author);
     }
 }

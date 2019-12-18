@@ -10,6 +10,8 @@ import main.common.Login;
 
 import java.io.IOException;
 
+import static main.common.Login.*;
+
 public class Main extends Application {
 
     private static Stage stage;
@@ -29,9 +31,28 @@ public class Main extends Application {
         stage.show();
     }
 
+    static class Database extends Thread
+    {
+        public void run()
+        {
+            try
+            {
+                importBooks();
+                importReaders();
+                importLibrarians();
+
+            }
+            catch (Exception e){}
+        }
+    }
     public static void main(String[] args) throws Exception {
 
-
+        String url="jdbc:mysql://37.59.55.185:3306/RWX3BuLgCH"; // database url
+        String userName="RWX3BuLgCH";
+        String password="2WMYapbyjH";
+        Class.forName("com.mysql.jdbc.Driver");
+        Login.con= DriverManager.getConnection(url,userName,password); // connecting to database
+        new Database().start();
         launch(args);
     }
 

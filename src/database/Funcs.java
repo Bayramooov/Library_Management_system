@@ -250,41 +250,47 @@ public  class Funcs {
     public static Hashtable<String, Integer> GetCountStatistics(Connection con)throws Exception
     {
         String countA="SELECT SUM(number_of_books) as sumOfAll,COUNT(*) AS ct FROM Books";
-        Statement sCountA=con.createStatement();
-        ResultSet rCountA=sCountA.executeQuery(countA);
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery(countA);
 
         String  countB="SELECT COUNT(*) AS ct FROM BorrowedBooks";
-        Statement sCountB=con.createStatement();
-        ResultSet rCountB=sCountB.executeQuery(countB);
 
         String countDS="SELECT COUNT(*) AS ct FROM (SELECT DISTINCT subject FROM Books) AS drv";
-        Statement sCountDS=con.createStatement();
-        ResultSet rCountDS=sCountDS.executeQuery(countDS);
+
+        String countReaders="SELECT COUNT(*) as ct FROM Accounts WHERE user_type=2";
 
         Hashtable<String,Integer> table=new Hashtable<String,Integer>();
         int totalNumberOfBooks=0;
         int borrowedBooks=0;
         int types=0;
         int subjects=0;
-        if(rCountA.next())
+        int numberOfReaders=0;
+        if(rs.next())
         {
-             totalNumberOfBooks+=rCountA.getInt("sumOfAll");
-             types=rCountA.getInt("ct");
+             totalNumberOfBooks+=rs.getInt("sumOfAll");
+             types=rs.getInt("ct");
         }
-        if(rCountB.next())
+        rs=st.executeQuery(countB);
+        if(rs.next())
         {
-            borrowedBooks=rCountB.getInt("ct");
+            borrowedBooks=rs.getInt("ct");
             totalNumberOfBooks+=borrowedBooks;
         }
-        if(rCountDS.next())
+        rs=st.executeQuery(countDS);
+        if(rs.next())
         {
-            subjects=rCountDS.getInt("ct");
+            subjects=rs.getInt("ct");
         }
-
+        rs=st.executeQuery(countReaders);
+        if(rs.next())
+        {
+            numberOfReaders=rs.getInt("ct");
+        }
         table.put("allBooks",totalNumberOfBooks);
         table.put("borrowedBooks",borrowedBooks);
         table.put("types",types);
         table.put("subjects",subjects);
+        table.put("readers",numberOfReaders);
         return table;
     }
 
