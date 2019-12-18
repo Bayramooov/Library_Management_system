@@ -118,6 +118,7 @@ public  class Funcs {
         return books;
     }
 
+    //Gets Borrowed Books of individual student
     public static ArrayList<BorrowedBook> GetBorrowedBooksOfStudent(Connection con, int borrowerId)throws Exception
     {
         String getBooks="select b.*,bb.borrow_date,bb.return_date,book_id,borrower_id from BorrowedBooks as bb " +
@@ -125,41 +126,44 @@ public  class Funcs {
                 " on bb.book_id=b.ID  where borrower_id=?";
         String getUser="select user_id,name from Accounts where ID=?";
         PreparedStatement pUser=con.prepareStatement(getUser);
-        PreparedStatement ps=con.prepareStatement(getBooks);
-        ps.setInt(1,borrowerId);
-        ResultSet rs=ps.executeQuery();
-        ArrayList<BorrowedBook> bList=new ArrayList<BorrowedBook>();
-        while(rs.next())
-        {
-            bList.add(new BorrowedBook((new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
-                    rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books"))),
-                    rs.getString("borrow_date"),rs.getString("return_date"))
-            );
-        }
-        return bList;
+        PreparedStatement pBook=con.prepareStatement(getBooks);
+        pBook.setInt(1,borrowerId);
+        return BorrowedBookGetter(pUser,pBook);
     }
 
-    public static ArrayList<BorrowedBook> GetAllBorrowedBooks(Connection con)
+    //Gets all borrowed books
+    public static ArrayList<BorrowedBook> GetAllBorrowedBooks(Connection con)throws Exception
     {
         String getBooks="select b.*,bb.borrow_date,bb.return_date,book_id,borrower_id from BorrowedBooks as bb " +
                 " JOIN Books as b " +
-                " on bb.book_id=b.ID  where borrower_id=?";
+                " on bb.book_id=b.ID";
         String getUser="select user_id,name from Accounts where ID=?";
+//Book book,int bkId,int brwId,String userName,String userId,String borrowedDate,String returnDate
         PreparedStatement pUser=con.prepareStatement(getUser);
-        PreparedStatement ps=con.prepareStatement(getBooks);
-        ps.setInt(1,borrowerId);
-        ResultSet rs=ps.executeQuery();
+        PreparedStatement pBook=con.prepareStatement(getBooks);
+        return BorrowedBookGetter(pUser,pBook);
+    }
+    // Private helper
+    private static  ArrayList<BorrowedBook>  BorrowedBookGetter(PreparedStatement pUser,PreparedStatement pBook)throws Exception
+    {
+        ResultSet rs=pBook.executeQuery();
+        ResultSet rUser;
+        String userName;
+        String userId;
         ArrayList<BorrowedBook> bList=new ArrayList<BorrowedBook>();
         while(rs.next())
         {
+            pUser.setInt(1,rs.getInt("borrower_id"));
+            rUser=pUser.executeQuery();
+            userName=rUser.getString("name");
+            userId=rUser.getString("user_id");
             bList.add(new BorrowedBook((new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
                     rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books"))),
-                    rs.getString("borrow_date"),rs.getString("return_date"))
+                    rs.getInt("book_id"),rs.getInt("borrower_id"),userName,userId,rs.getString("borrow_date"),rs.getString("return_date"))
             );
         }
         return bList;
     }
-
     public static ArrayList<Book> GetTop3Books(Connection con)throws Exception
     {
         String command="SELECT * FROM Books ORDER BY taken DESC Limit 3";
