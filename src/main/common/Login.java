@@ -52,7 +52,7 @@ public class Login {
                 Main.setScene("/main/common/LibrarianFrame.fxml");
             } else if(currentUser.getUType() == UserType.Reader)
                 if(!currentUser.Blocked) {
-                    importMyBooksList();
+                    Funcs.GetBorrowedBooksOfReader(con,currentUser.TableId);
                     Main.setScene("/main/common/ReaderFrame.fxml");
                 } else {
                     welcomeMessage.setText("Blocked User!");
@@ -66,24 +66,4 @@ public class Login {
             login_passwordField.clear();
         }
     }
-
-    public static void importBooks() throws Exception {
-        observableBookList.addAll(Funcs.GetAllBooks(con));
-        observableBorrowedBookList.addAll(Funcs.GetAllBorrowedBooks(con));
-    }
-
-    public static void importReaders() throws Exception {
-        observableReadersList.addAll(Funcs.GetReaders(con));
-        observableBlockedReadersList.addAll(Funcs.GetBlockedUsers(con));
-    }
-
-    public static void importLibrarians() throws Exception {
-        observableLibrarianList.addAll(Funcs.GetLibrarians(con));
-    }
-
-    private void importMyBooksList() throws Exception {
-        observableMyBookList.clear();
-        observableMyBookList.addAll(Funcs.GetBorrowedBooksOfReader(con,currentUser.TableId));
-    }
-
 }

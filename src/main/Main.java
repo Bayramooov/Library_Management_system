@@ -1,5 +1,7 @@
 package main;
 import java.sql.*;
+
+import database.Funcs;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -37,9 +39,11 @@ public class Main extends Application {
         {
             try
             {
-                importBooks();
-                importLibrarians();
-                importReaders();
+                Funcs.GetAllBooks(con);
+                Funcs.GetAllBorrowedBooks(con);
+                Funcs.GetLibrarians(con);
+                Funcs.GetBlockedUsers(con);
+                Funcs.GetReaders(con);
             }
             catch (Exception e){}
         }

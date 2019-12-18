@@ -1,5 +1,7 @@
 package database;
 
+import main.DataCollection;
+
 import java.sql.*;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
@@ -99,22 +101,20 @@ public  class Funcs {
         return null;
     }
 
-    public static ArrayList<Book> GetAllBooks(Connection con)throws Exception
+    public static void GetAllBooks(Connection con)throws Exception
     {
         String query="SELECT * FROM Books";
         Statement st=con.createStatement();
         ResultSet rs=st.executeQuery(query);
-        ArrayList<Book> books= new  ArrayList<Book>();
         while(rs.next())
         {
-           books.add(new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
+           DataCollection.observableBookList.add(new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
                    rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books")));
         }
-        return books;
     }
 
     //Gets Borrowed Books of individual student
-    public static ArrayList<BorrowedBook> GetBorrowedBooksOfReader(Connection con, int borrowerId)throws Exception
+    public static void GetBorrowedBooksOfReader(Connection con, int borrowerId)throws Exception
     {
         String getBooks="select b.*,bb.borrow_date,bb.return_date,book_id,borrower_id from BorrowedBooks as bb " +
                 " JOIN Books as b " +
@@ -123,11 +123,27 @@ public  class Funcs {
         PreparedStatement pUser=con.prepareStatement(getUser);
         PreparedStatement pBook=con.prepareStatement(getBooks);
         pBook.setInt(1,borrowerId);
-        return BorrowedBookGetter(pUser,pBook);
+
+        ResultSet rs=pBook.executeQuery();
+        ResultSet rUser;
+        String userName;
+        String userId;
+        while(rs.next())
+        {
+            pUser.setInt(1,rs.getInt("borrower_id"));
+            rUser=pUser.executeQuery();
+            rUser.next();
+            userName=rUser.getString("name");
+            userId=rUser.getString("user_id");
+            DataCollection.observableMyBookList.add(new BorrowedBook((new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
+                    rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books"))),
+                    rs.getInt("book_id"),rs.getInt("borrower_id"),userName,userId,rs.getString("borrow_date"),rs.getString("return_date"))
+            );
+        }
     }
 
     //Gets all borrowed books
-    public static ArrayList<BorrowedBook> GetAllBorrowedBooks(Connection con)throws Exception
+    public static void GetAllBorrowedBooks(Connection con)throws Exception
     {
         String getBooks="select b.*,bb.borrow_date,bb.return_date,book_id,borrower_id from BorrowedBooks as bb " +
                 " JOIN Books as b " +
@@ -136,16 +152,10 @@ public  class Funcs {
 //Book book,int bkId,int brwId,String userName,String userId,String borrowedDate,String returnDate
         PreparedStatement pUser=con.prepareStatement(getUser);
         PreparedStatement pBook=con.prepareStatement(getBooks);
-        return BorrowedBookGetter(pUser,pBook);
-    }
-    // Private helper
-    private static  ArrayList<BorrowedBook>  BorrowedBookGetter(PreparedStatement pUser,PreparedStatement pBook)throws Exception
-    {
         ResultSet rs=pBook.executeQuery();
         ResultSet rUser;
         String userName;
         String userId;
-        ArrayList<BorrowedBook> bList=new ArrayList<BorrowedBook>();
         while(rs.next())
         {
             pUser.setInt(1,rs.getInt("borrower_id"));
@@ -153,12 +163,11 @@ public  class Funcs {
             rUser.next();
             userName=rUser.getString("name");
             userId=rUser.getString("user_id");
-            bList.add(new BorrowedBook((new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
+            DataCollection.observableBorrowedBookList.add(new BorrowedBook((new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
                     rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books"))),
                     rs.getInt("book_id"),rs.getInt("borrower_id"),userName,userId,rs.getString("borrow_date"),rs.getString("return_date"))
             );
         }
-        return bList;
     }
     public static ArrayList<Book> GetTop3Books(Connection con)throws Exception
     {
@@ -189,22 +198,20 @@ public  class Funcs {
         return books;
     }
 
-    public static ArrayList<User> GetBlockedUsers(Connection con)throws Exception
+    public static void GetBlockedUsers(Connection con)throws Exception
     {
         String select="SELECT * FROM Accounts WHERE blocked=1";
         Statement st=con.createStatement();
         ResultSet rs=st.executeQuery(select);
-        ArrayList<User> readers=new ArrayList<User>();
         while(rs.next())
         {
 //int tableId, String name, String ID, String password, boolean blocked, int numberOfBooks, UserType  type
-            readers.add(new User(rs.getInt("ID"),rs.getString("name"),
+            DataCollection.observableBlockedReadersList.add(new User(rs.getInt("ID"),rs.getString("name"),
                     rs.getString("user_id"),rs.getString("password"),GetUserType(rs.getInt("user_type"))));
         }
-        return readers;
     }
 
-    public static ArrayList<User> GetReaders(Connection con)throws Exception
+    public static void GetReaders(Connection con)throws Exception
     {
         String select="SELECT * FROM Accounts WHERE user_type=2";
         String getBrwdBooks="SELECT COUNT(*) as count FROM BorrowedBooks WHERE borrower_id=?";
@@ -215,7 +222,6 @@ public  class Funcs {
         LocalDateTime second;
         ResultSet rnob;
         int nob;
-        ArrayList<User> readers=new ArrayList<User>();
         while(rs.next())
         {
             ps.setInt(1,rs.getInt("ID"));
@@ -229,28 +235,26 @@ public  class Funcs {
                 nob=0;
             }
 //int tableId, String name, String ID, String password, boolean blocked, int numberOfBooks, UserType  type
-            readers.add(new User(rs.getInt("ID"),rs.getString("name"),
+            DataCollection.observableReadersList.add(new User(rs.getInt("ID"),rs.getString("name"),
                     rs.getString("user_id"),rs.getString("password"),
                     rs.getBoolean("blocked"),nob,GetUserType(rs.getInt("user_type"))));
         }
         second=LocalDateTime.now();
         System.out.println(first.toEpochSecond(ZoneOffset.UTC)-second.toEpochSecond(ZoneOffset.UTC));;
-        return readers;
+        //return readers;
     }
 
-    public static ArrayList<User> GetLibrarians(Connection con)throws Exception
+    public static void GetLibrarians(Connection con)throws Exception
     {
         String command="SELECT * FROM Accounts WHERE user_type=1";
         Statement st=con.createStatement();
         ResultSet rs=st.executeQuery(command);
-        ArrayList<User> librs=new ArrayList<>();
         while(rs.next())
         {
             //int tableId,String name,String id,String password,UserType type
-            librs.add(new User(rs.getInt("ID"),rs.getString("name"),
+            DataCollection.observableLibrarianList.add(new User(rs.getInt("ID"),rs.getString("name"),
                     rs.getString("user_id"),rs.getString("password"),GetUserType(rs.getInt("user_type"))));
         }
-        return librs;
     }
 
     public static Hashtable<String, Integer> GetCountStatistics(Connection con)throws Exception
