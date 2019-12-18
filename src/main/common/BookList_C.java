@@ -10,6 +10,8 @@ import javafx.scene.input.MouseEvent;
 import javafx.stage.Modality;
 import main.DataCollection;
 
+import java.time.LocalDate;
+
 
 public class BookList_C {
     @FXML
@@ -33,8 +35,28 @@ public class BookList_C {
             subjectColumn.setMinWidth(250.0);
             subjectColumn.setMaxWidth(250.0);
             subjectColumn.setCellValueFactory(new PropertyValueFactory<>("Subject"));
+
             tableView.setItems(DataCollection.observableBookList);
             tableView.getColumns().addAll(titleColumn, authorColumn, subjectColumn);
+        }
+        else if(MainFrame.pressedPanel.equals("My Books")) {
+            TableColumn<database.BorrowedBook, Book> titleColumn = new TableColumn<>("Title");
+            titleColumn.setMinWidth(250.0);
+            titleColumn.setMaxWidth(250.0);
+            titleColumn.setCellValueFactory(new PropertyValueFactory<>("Book"));
+
+            TableColumn<database.BorrowedBook, LocalDate> borrowedDateColumn = new TableColumn<>("Borrowed Date");
+            borrowedDateColumn.setMinWidth(250.0);
+            borrowedDateColumn.setMaxWidth(250.0);
+            borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("BorrowedDate"));
+
+            TableColumn<database.BorrowedBook, LocalDate> returnedDateColumn = new TableColumn<>("Return Date");
+            returnedDateColumn.setMinWidth(250.0);
+            returnedDateColumn.setMaxWidth(250.0);
+            returnedDateColumn.setCellValueFactory(new PropertyValueFactory<>("ReturnDate"));
+
+            tableView.setItems(DataCollection.observableMyBookList);
+            tableView.getColumns().addAll(titleColumn, borrowedDateColumn, borrowedDateColumn);
         }
     }
 

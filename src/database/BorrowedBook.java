@@ -22,6 +22,59 @@ public class BorrowedBook {
         this.UserId=userId;
     }
 
+    public database.Book getBook() {
+        return Book;
+    }
 
+    public void setBook(database.Book book) {
+        Book = book;
+    }
 
+    public int getBookId() {
+        return BookId;
+    }
+
+    public void setBookId(int bookId) {
+        BookId = bookId;
+    }
+
+    public int getBorrowerId() {
+        return BorrowerId;
+    }
+
+    public void setBorrowerId(int borrowerId) {
+        BorrowerId = borrowerId;
+    }
+
+    public String getUserName() {
+        return UserName;
+    }
+
+    public void setUserName(String userName) {
+        UserName = userName;
+    }
+
+    public String getUserId() {
+        return UserId;
+    }
+
+    public void setUserId(String userId) {
+        UserId = userId;
+    }
+
+    public LocalDate getBorrowedDate() {
+        return BorrowedDate;
+    }
+
+    public void setBorrowedDate(LocalDate borrowedDate) {
+        BorrowedDate = borrowedDate;
+    }
+
+    public LocalDate getReturnDate() {
+        return ReturnDate;
+    }
+
+    public void setReturnDate(LocalDate returnDate) {
+        ReturnDate = returnDate;
+    }
 }

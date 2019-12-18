@@ -70,7 +70,10 @@ public class Book {
     @Override
     public String toString()
     {
-        return "ID:"+this.ID+" Title:"+this.Title+" Author:"+this.Author+" PublishedYear:"+this.PublishedYear+" Subject:"+this.Subject+
-                " Available:"+this.AvailableBooks;
+        return Title;
+    /*    return "ID:"+this.ID+" Title:"+this.Title+" Author:"+this.Author+" PublishedYear:"+this.PublishedYear+" Subject:"+this.Subject+
+                " Available:"+this.AvailableBooks;*/
     }
+
+
 }
