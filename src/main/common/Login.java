@@ -8,14 +8,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
-import main.DataCollection;
 import main.Main;
 
-import java.io.IOException;
+import java.sql.Connection;
+import java.sql.DriverManager;
 
 import static main.DataCollection.*;
 
 public class Login {
+    public static Connection con=null;
     @FXML
     private Label welcomeMessage;
     @FXML
@@ -31,7 +32,13 @@ public class Login {
     @FXML
     public void login(ActionEvent event) throws Exception {
 
-        currentUser = database.Funcs.LoginUser(Main.con,login_userIDField.getText(),login_passwordField.getText());
+        String url="jdbc:mysql://37.59.55.185:3306/RWX3BuLgCH"; // database url
+        String userName="RWX3BuLgCH";
+        String password="2WMYapbyjH";
+        Class.forName("com.mysql.jdbc.Driver");
+        Login.con= DriverManager.getConnection(url,userName,password); // connecting to database
+        
+        currentUser = database.Funcs.LoginUser(con,login_userIDField.getText(),login_passwordField.getText());
         //  TEMPORARY !!!
         if(currentUser != null) {
             username = currentUser.getName();
@@ -61,21 +68,21 @@ public class Login {
     }
 
     private void importBooks() throws Exception {
-        observableBookList.addAll(Funcs.GetAllBooks(Main.con));
-        observableBorrowedBookList.addAll(Funcs.GetAllBorrowedBooks(Main.con));
+        observableBookList.addAll(Funcs.GetAllBooks(con));
+        observableBorrowedBookList.addAll(Funcs.GetAllBorrowedBooks(con));
     }
 
     private void importReaders() throws Exception {
-        observableReadersList.addAll(Funcs.GetReaders(Main.con));
-        observableBlockedReadersList.addAll(Funcs.GetBlockedUsers(Main.con));
+        observableReadersList.addAll(Funcs.GetReaders(con));
+        observableBlockedReadersList.addAll(Funcs.GetBlockedUsers(con));
     }
 
     private void importLibrarians() throws Exception {
-        observableLibrarianList.addAll(Funcs.GetLibrarians(Main.con));
+        observableLibrarianList.addAll(Funcs.GetLibrarians(con));
     }
 
     private void importMyBooksList() throws Exception {
-        observableMyBookList.addAll(Funcs.GetBorrowedBooksOfReader(Main.con,currentUser.TableId));
+        observableMyBookList.addAll(Funcs.GetBorrowedBooksOfReader(con,currentUser.TableId));
     }
 
 }

@@ -22,8 +22,8 @@ public class BorrowedBook {
         this.UserId=userId;
     }
 
-    public database.Book getBook() {
-        return Book;
+    public String getBook() {
+        return Book.toString();
     }
 
     public void setBook(database.Book book) {
@@ -62,16 +62,16 @@ public class BorrowedBook {
         UserId = userId;
     }
 
-    public LocalDate getBorrowedDate() {
-        return BorrowedDate;
+    public String getBorrowedDate() {
+        return BorrowedDate.toString();
     }
 
     public void setBorrowedDate(LocalDate borrowedDate) {
         BorrowedDate = borrowedDate;
     }
 
-    public LocalDate getReturnDate() {
-        return ReturnDate;
+    public String getReturnDate() {
+        return ReturnDate.toString();
     }
 
     public void setReturnDate(LocalDate returnDate) {

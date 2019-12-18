@@ -6,6 +6,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import main.common.Login;
+
 import java.io.IOException;
 
 public class Main extends Application {
@@ -13,7 +15,6 @@ public class Main extends Application {
     private static Stage stage;
     private static Scene scene;
     private static Parent root;
-    public static Connection con=null;
 
     @Override
     public void start(Stage primaryStage) throws Exception{
@@ -29,11 +30,7 @@ public class Main extends Application {
     }
 
     public static void main(String[] args) throws Exception {
-        String url="jdbc:mysql://37.59.55.185:3306/RWX3BuLgCH"; // database url
-        String userName="RWX3BuLgCH";
-        String password="2WMYapbyjH";
-        Class.forName("com.mysql.jdbc.Driver");
-        con=DriverManager.getConnection(url,userName,password); // connecting to database
+
 
         launch(args);
     }
