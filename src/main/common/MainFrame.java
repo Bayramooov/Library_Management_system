@@ -101,7 +101,7 @@ public class MainFrame {
     public void handleLibrariansButton(ActionEvent actionEvent) throws IOException {
         panelName.setText("Librarians");
         pressedPanel = "Librarians";
-        GridPane panel = FXMLLoader.load(getClass().getResource("/main/common/BookList.fxml"));
+        GridPane panel = FXMLLoader.load(getClass().getResource("/main/common/Readers.fxml"));
         mainFrame.setCenter(panel);
     }
 

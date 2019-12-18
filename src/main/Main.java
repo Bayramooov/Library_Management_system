@@ -38,9 +38,8 @@ public class Main extends Application {
             try
             {
                 importBooks();
-                importReaders();
                 importLibrarians();
-
+                importReaders();
             }
             catch (Exception e){}
         }

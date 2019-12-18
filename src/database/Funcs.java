@@ -2,6 +2,8 @@ package database;
 
 import java.sql.*;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.Hashtable;
 
@@ -209,6 +211,8 @@ public  class Funcs {
         PreparedStatement ps=con.prepareStatement(getBrwdBooks);
         Statement st=con.createStatement();
         ResultSet rs=st.executeQuery(select);
+        LocalDateTime first=LocalDateTime.now();
+        LocalDateTime second;
         ResultSet rnob;
         int nob;
         ArrayList<User> readers=new ArrayList<User>();
@@ -227,8 +231,10 @@ public  class Funcs {
 //int tableId, String name, String ID, String password, boolean blocked, int numberOfBooks, UserType  type
             readers.add(new User(rs.getInt("ID"),rs.getString("name"),
                     rs.getString("user_id"),rs.getString("password"),
-                    rs.getInt("blocked")==1?true:false,nob,GetUserType(rs.getInt("user_type"))));
+                    rs.getBoolean("blocked"),nob,GetUserType(rs.getInt("user_type"))));
         }
+        second=LocalDateTime.now();
+        System.out.println(first.toEpochSecond(ZoneOffset.UTC)-second.toEpochSecond(ZoneOffset.UTC));;
         return readers;
     }
 

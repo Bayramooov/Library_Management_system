@@ -24,6 +24,8 @@ public class BookList_C {
         }
         else if(MainFrame.pressedPanel.equals("My Books")) {
             initMyBooks();
+        } else if(MainFrame.pressedPanel.equals("Borrowed Books")) {
+            initBorrowedBooks();
         }
     }
 
@@ -129,6 +131,31 @@ public class BookList_C {
       returnedDateColumn.setMaxWidth(250.0);
       returnedDateColumn.setCellValueFactory(new PropertyValueFactory<>("ReturnDate"));
       tableView.setItems(DataCollection.observableMyBookList);
+      tableView.getColumns().addAll(titleColumn, borrowedDateColumn, returnedDateColumn);
+  }
+
+  private void initBorrowedBooks() {
+
+      TableColumn<database.BorrowedBook, String> IDColumn = new TableColumn<>("Borrower ID");
+      IDColumn.setMinWidth(280.0);
+      IDColumn.setMaxWidth(280.0);
+      IDColumn.setCellValueFactory(new PropertyValueFactory<>("UserId"));
+
+      TableColumn<database.BorrowedBook, String> titleColumn = new TableColumn<>("Title");
+      titleColumn.setMinWidth(280.0);
+      titleColumn.setMaxWidth(280.0);
+      titleColumn.setCellValueFactory(new PropertyValueFactory<>("Book"));
+
+      TableColumn<database.BorrowedBook, String> borrowedDateColumn = new TableColumn<>("Borrowed Date");
+      borrowedDateColumn.setMinWidth(250.0);
+      borrowedDateColumn.setMaxWidth(250.0);
+      borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("BorrowedDate"));
+
+      TableColumn<database.BorrowedBook, String> returnedDateColumn = new TableColumn<>("Return Date");
+      returnedDateColumn.setMinWidth(250.0);
+      returnedDateColumn.setMaxWidth(250.0);
+      returnedDateColumn.setCellValueFactory(new PropertyValueFactory<>("ReturnDate"));
+      tableView.setItems(DataCollection.observableBorrowedBookList);
       tableView.getColumns().addAll(titleColumn, borrowedDateColumn, returnedDateColumn);
   }
 }
