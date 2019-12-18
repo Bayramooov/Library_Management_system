@@ -1,6 +1,4 @@
 package main.common;
-import database.Book;
-import database.BorrowedBook;
 import database.Funcs;
 import database.UserType;
 import javafx.event.ActionEvent;
@@ -39,11 +37,15 @@ public class Login {
             username = currentUser.getName();
             importBooks();
             if(currentUser.getUType() == UserType.Admin) {
+                importLibrarians();
+                importReaders();
                 Main.setScene("/main/common/AdminFrame.fxml");
             } else if(currentUser.getUType() == UserType.Librarian) {
+                importReaders();
                 Main.setScene("/main/common/LibrarianFrame.fxml");
             } else if(currentUser.getUType() == UserType.Reader)
                 if(!currentUser.Blocked) {
+                    importMyBooksList();
                     Main.setScene("/main/common/ReaderFrame.fxml");
                 } else {
                     welcomeMessage.setText("Blocked User!");
@@ -61,11 +63,19 @@ public class Login {
     private void importBooks() throws Exception {
         observableBookList.addAll(Funcs.GetAllBooks(Main.con));
         observableBorrowedBookList.addAll(Funcs.GetAllBorrowedBooks(Main.con));
-        if(currentUser.getUType() == UserType.Reader) {
-            for(BorrowedBook b: observableBorrowedBookList) {
-                if(b.UserId.equals(currentUser.ID))
-                observableMyBookList.add(b);
-            }
-        }
     }
+
+    private void importReaders() throws Exception {
+        observableReadersList.addAll(Funcs.GetReaders(Main.con));
+        observableBlockedReadersList.addAll(Funcs.GetBlockedUsers(Main.con));
+    }
+
+    private void importLibrarians() throws Exception {
+        observableLibrarianList.addAll(Funcs.GetLibrarians(Main.con));
+    }
+
+    private void importMyBooksList() throws Exception {
+        observableMyBookList.addAll(Funcs.GetBorrowedBooksOfReader(Main.con,currentUser.TableId));
+    }
+
 }

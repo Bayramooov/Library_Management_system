@@ -112,7 +112,7 @@ public  class Funcs {
     }
 
     //Gets Borrowed Books of individual student
-    public static ArrayList<BorrowedBook> GetBorrowedBooksOfStudent(Connection con, int borrowerId)throws Exception
+    public static ArrayList<BorrowedBook> GetBorrowedBooksOfReader(Connection con, int borrowerId)throws Exception
     {
         String getBooks="select b.*,bb.borrow_date,bb.return_date,book_id,borrower_id from BorrowedBooks as bb " +
                 " JOIN Books as b " +
@@ -148,6 +148,7 @@ public  class Funcs {
         {
             pUser.setInt(1,rs.getInt("borrower_id"));
             rUser=pUser.executeQuery();
+            rUser.next();
             userName=rUser.getString("name");
             userId=rUser.getString("user_id");
             bList.add(new BorrowedBook((new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
@@ -184,6 +185,21 @@ public  class Funcs {
                     rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books")));
         }
         return books;
+    }
+
+    public static ArrayList<User> GetBlockedUsers(Connection con)throws Exception
+    {
+        String select="SELECT * FROM Accounts WHERE blocked=1";
+        Statement st=con.createStatement();
+        ResultSet rs=st.executeQuery(select);
+        ArrayList<User> readers=new ArrayList<User>();
+        while(rs.next())
+        {
+//int tableId, String name, String ID, String password, boolean blocked, int numberOfBooks, UserType  type
+            readers.add(new User(rs.getInt("ID"),rs.getString("name"),
+                    rs.getString("user_id"),rs.getString("password"),GetUserType(rs.getInt("user_type"))));
+        }
+        return readers;
     }
 
     public static ArrayList<User> GetReaders(Connection con)throws Exception

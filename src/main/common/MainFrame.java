@@ -13,6 +13,7 @@ import main.Main;
 import java.io.IOException;
 
 public class MainFrame {
+    public static String pressedPanel;
     @FXML
     public BorderPane mainFrame;
     @FXML
@@ -65,6 +66,7 @@ public class MainFrame {
     @FXML
     public void handleBooksButton(ActionEvent event) throws IOException {
         panelName.setText("Books");
+        pressedPanel = "Books";
         GridPane booksPanel = FXMLLoader.load(getClass().getResource("/main/common/BookList.fxml"));
         mainFrame.setCenter(booksPanel);
     }
@@ -73,6 +75,7 @@ public class MainFrame {
     @FXML
     public void handleMyBooksButton(ActionEvent event) throws IOException {
         panelName.setText("My Books");
+        pressedPanel = "My Books";
         GridPane panel = FXMLLoader.load(getClass().getResource("/main/common/BookList.fxml"));
         mainFrame.setCenter(panel);
     }
@@ -81,6 +84,7 @@ public class MainFrame {
     @FXML
     public void handleBorrowedBooksButton(ActionEvent event) throws IOException {
         panelName.setText("Borrowed Books");
+        pressedPanel = "Borrowed Books";
         GridPane panel = FXMLLoader.load(getClass().getResource("/main/common/BookList.fxml"));
         mainFrame.setCenter(panel);
     }
@@ -88,6 +92,7 @@ public class MainFrame {
     // shows List of Readers
     public void handleReadersButton(ActionEvent actionEvent) throws IOException {
         panelName.setText("Readers");
+        pressedPanel = "Readers";
         GridPane readersPanel = FXMLLoader.load(getClass().getResource("/main/common/Readers.fxml"));
         mainFrame.setCenter(readersPanel);
     }
@@ -95,12 +100,14 @@ public class MainFrame {
     // shows List of Librarians
     public void handleLibrariansButton(ActionEvent actionEvent) throws IOException {
         panelName.setText("Librarians");
+        pressedPanel = "Librarians";
         GridPane panel = FXMLLoader.load(getClass().getResource("/main/common/BookList.fxml"));
         mainFrame.setCenter(panel);
     }
 
     public void handleBlockedReadersButton(ActionEvent actionEvent) throws IOException {
         panelName.setText("Blocked Readers");
+        pressedPanel = "Blocked Readers";
         GridPane blockedReaders = FXMLLoader.load(getClass().getResource("/main/common/Readers.fxml"));
         mainFrame.setCenter(blockedReaders);
     }

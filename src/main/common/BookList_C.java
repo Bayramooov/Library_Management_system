@@ -17,33 +17,25 @@ public class BookList_C {
 
     // initializing tableView
     public void initialize() {
-        TableColumn<database.Book, Integer> IDColumn = new TableColumn<>("ID");
-        IDColumn.setMinWidth(47.0);
-        IDColumn.setMaxWidth(50.0);
-        IDColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+        if(MainFrame.pressedPanel.equals("Books")) {
+            TableColumn<database.Book, String> titleColumn = new TableColumn<>("Title");
+            titleColumn.setMinWidth(250.0);
+            titleColumn.setMaxWidth(250.0);
+            titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
 
 
-        TableColumn<database.Book, String> titleColumn = new TableColumn<>("Title");
-        titleColumn.setMinWidth(250.0);
-        titleColumn.setMaxWidth(250.0);
-        titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
+            TableColumn<database.Book, String> authorColumn = new TableColumn<>("Author");
+            authorColumn.setMinWidth(250.0);
+            authorColumn.setMaxWidth(250.0);
+            authorColumn.setCellValueFactory(new PropertyValueFactory<>("Author"));
 
-
-        TableColumn<database.Book, String> authorColumn = new TableColumn<>("Author");
-        authorColumn.setMinWidth(250.0);
-        authorColumn.setMaxWidth(250.0);
-        authorColumn.setCellValueFactory(new PropertyValueFactory<>("Author"));
-
-        System.out.println(DataCollection.observableBookList.get(1).PublishedYear);
-
-/*
-        TableColumn<database.Book, String> subjectColumn = new TableColumn<>("Subject");
-        subjectColumn.setMinWidth(250.0);
-        IDColumn.setMaxWidth(250.0);
-        subjectColumn.setCellValueFactory(new PropertyValueFactory<>("Subject"));*/
-        tableView.setItems(DataCollection.observableBookList);
-        tableView.getColumns().addAll(IDColumn, titleColumn, authorColumn/*, subjectColumn*/);
-
+            TableColumn<database.Book, String> subjectColumn = new TableColumn<>("Subject");
+            subjectColumn.setMinWidth(250.0);
+            subjectColumn.setMaxWidth(250.0);
+            subjectColumn.setCellValueFactory(new PropertyValueFactory<>("Subject"));
+            tableView.setItems(DataCollection.observableBookList);
+            tableView.getColumns().addAll(titleColumn, authorColumn, subjectColumn);
+        }
     }
 
     // Handles the mouseClick of TableView
@@ -68,8 +60,7 @@ public class BookList_C {
             public void handle(MouseEvent mouseEvent) {
                 if (mouseEvent.getButton().equals(MouseButton.SECONDARY)) {
                     if (mouseEvent.getClickCount() == 2) {
-                        database.Book temp = (Book) tableView.getSelectionModel().getSelectedItem();
-                        DataCollection.observableBookList.add(temp);
+
                     }
                 }
             }
