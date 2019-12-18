@@ -182,20 +182,20 @@ public  class Funcs {
         return bks;
     }
 
-    public static ArrayList<Book> Search(Connection con,String bookName)throws Exception
+    public static void Search(Connection con,String bookName)throws Exception
     {
+        DataCollection.observableSearchingBooksList.clear();
         String command="SELECT * FROM Books WHERE title REGEXP ? OR author REGEXP ?";
         PreparedStatement ps=con.prepareStatement(command);
         ps.setString(1,bookName);
         ps.setString(2,bookName);
         ResultSet rs=ps.executeQuery();
-        ArrayList<Book> books= new  ArrayList<Book>();
+
         while(rs.next())
         {
-            books.add(new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
+            DataCollection.observableSearchingBooksList.add(new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
                     rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books")));
         }
-        return books;
     }
 
     public static void GetBlockedUsers(Connection con)throws Exception
@@ -218,8 +218,6 @@ public  class Funcs {
         PreparedStatement ps=con.prepareStatement(getBrwdBooks);
         Statement st=con.createStatement();
         ResultSet rs=st.executeQuery(select);
-        LocalDateTime first=LocalDateTime.now();
-        LocalDateTime second;
         ResultSet rnob;
         int nob;
         while(rs.next())
@@ -239,9 +237,6 @@ public  class Funcs {
                     rs.getString("user_id"),rs.getString("password"),
                     rs.getBoolean("blocked"),nob,GetUserType(rs.getInt("user_type"))));
         }
-        second=LocalDateTime.now();
-        System.out.println(first.toEpochSecond(ZoneOffset.UTC)-second.toEpochSecond(ZoneOffset.UTC));;
-        //return readers;
     }
 
     public static void GetLibrarians(Connection con)throws Exception

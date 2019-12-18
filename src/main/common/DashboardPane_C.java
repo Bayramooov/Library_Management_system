@@ -32,11 +32,10 @@ public class DashboardPane_C {
     private Label booksName_3;
     @FXML
     private Label authorName_3;
-
-    //  INITIALIZATION OF ALL THE LABELS...
-    //  WILL BE LOADED FROM THE DATABASE LATER...
+    public static Hashtable<String, Integer> stats;
+    public static ArrayList<Book> top3Books;
+    // Initializing from database
     public void initialize() throws Exception {
-        Hashtable<String, Integer> stats = Funcs.GetCountStatistics(Login.con);
 
         totalBooks.setText(stats.get("allBooks").toString());
         borrowedBooks.setText(stats.get("borrowedBooks").toString());

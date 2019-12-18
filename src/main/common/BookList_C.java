@@ -1,6 +1,8 @@
 package main.common;
 
 import database.Book;
+import database.Funcs;
+import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -15,10 +17,12 @@ import main.DataCollection;
 
 public class BookList_C {
     @FXML
+    private TextField text;
+    @FXML
     private TableView tableView;
 
     // initializing tableView
-    public void initialize() {
+    public void initialize() throws Exception {
         if(MainFrame.pressedPanel.equals("Books")) {
             initBooks();
         }
@@ -93,7 +97,7 @@ public class BookList_C {
         return null;
     }*/
 
-  private void initBooks() {
+  private void initBooks() throws Exception {
       TableColumn<database.Book, String> titleColumn = new TableColumn<>("Title");
       titleColumn.setMinWidth(250.0);
       titleColumn.setMaxWidth(250.0);
@@ -109,9 +113,14 @@ public class BookList_C {
       subjectColumn.setMinWidth(250.0);
       subjectColumn.setMaxWidth(250.0);
       subjectColumn.setCellValueFactory(new PropertyValueFactory<>("Subject"));
-
       tableView.setItems(DataCollection.observableBookList);
       tableView.getColumns().addAll(titleColumn, authorColumn, subjectColumn);
+  }
+
+  private void searchingBooks() throws Exception {
+      Funcs.Search(Login.con,text.getText());
+      tableView.getItems().removeAll();
+      tableView.setItems(DataCollection.observableSearchingBooksList);
   }
 
   private void initMyBooks() {
@@ -158,4 +167,9 @@ public class BookList_C {
       tableView.setItems(DataCollection.observableBorrowedBookList);
       tableView.getColumns().addAll(titleColumn, borrowedDateColumn, returnedDateColumn);
   }
+
+    public void handleSearchButton(ActionEvent actionEvent) throws Exception {
+      searchingBooks();
+
+    }
 }

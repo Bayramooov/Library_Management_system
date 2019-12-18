@@ -1,6 +1,6 @@
 package main;
-import java.sql.*;
 
+import java.sql.*;
 import database.Funcs;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -8,11 +8,11 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import main.common.DashboardPane_C;
 import main.common.Login;
-
 import java.io.IOException;
-
 import static main.common.Login.*;
+
 
 public class Main extends Application {
 
@@ -48,6 +48,28 @@ public class Main extends Application {
             catch (Exception e){}
         }
     }
+
+    static class UpdateConnection extends Thread
+    {
+        public void run()
+        {
+            try
+            {
+                while(true) {
+                    DashboardPane_C.stats = Funcs.GetCountStatistics(Login.con);
+                    DashboardPane_C.top3Books = Funcs.GetTop3Books(con);
+                    Thread.sleep(180000);
+                    String url = "jdbc:mysql://37.59.55.185:3306/RWX3BuLgCH"; // database url
+                    String userName = "RWX3BuLgCH";
+                    String password = "2WMYapbyjH";
+                    Class.forName("com.mysql.jdbc.Driver");
+                    Login.con = DriverManager.getConnection(url, userName, password); // connecting to database
+                }
+            }
+            catch (Exception e){}
+        }
+    }
+
     public static void main(String[] args) throws Exception {
 
         String url="jdbc:mysql://37.59.55.185:3306/RWX3BuLgCH"; // database url
@@ -55,13 +77,14 @@ public class Main extends Application {
         String password="2WMYapbyjH";
         Class.forName("com.mysql.jdbc.Driver");
         Login.con= DriverManager.getConnection(url,userName,password); // connecting to database
+        new UpdateConnection().start();
         new Database().start();
         launch(args);
+        System.exit(1);
     }
 
     //  SWITCHES THE SCENES OF THE STAGE (WINDOW)
     public static void setScene(String fileName) throws IOException {
-        // stage.close();
         root = FXMLLoader.load(Main.class.getResource(fileName));
         scene = new Scene(root, 1024, 576);
         scene.getStylesheets().add(Main.class.getResource("/main/common/style.css").toExternalForm());

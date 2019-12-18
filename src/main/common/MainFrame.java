@@ -45,7 +45,7 @@ public class MainFrame {
 
     }
 
-    //  LOG OUT BUTTON JUST INITIALIZED, TO BE CONTINUED...
+    //  Returning to LogIn Page
     @FXML
     public void handleLogOutButton(ActionEvent event) throws IOException {
         //  Saving all the changes to the database...
@@ -54,7 +54,7 @@ public class MainFrame {
         Main.setScene("/main/common/Login.fxml");
     }
 
-    // DASHBOARD BUTTON JUST INITIALIZED, TO BE CONTINUED...
+    // Opening Dashboard
     @FXML
     public void handleDashboardButton() throws IOException {
         panelName.setText("Dashboard");
@@ -62,7 +62,7 @@ public class MainFrame {
         mainFrame.setCenter(dashboardPanel);
     }
 
-    // BOOKS BUTTON JUST INITIALIZED, TO BE CONTINUED...
+    // Opening List of Books
     @FXML
     public void handleBooksButton(ActionEvent event) throws IOException {
         panelName.setText("Books");
