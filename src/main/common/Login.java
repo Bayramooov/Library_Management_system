@@ -1,4 +1,5 @@
 package main.common;
+import database.UserType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -6,7 +7,9 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import javafx.scene.paint.Paint;
+import main.DataCollection;
 import main.Main;
+import static main.DataCollection.currentUser;
 
 import java.io.IOException;
 
@@ -22,27 +25,23 @@ public class Login {
 
     public static String username;
 
-
+    // Authenticating User
     @FXML
-    public void login(ActionEvent event) throws IOException {
-        //  Checking user inputs process...
-        //  ...
-        //  by the time authentication finishes & Loads the MainFrame page.
+    public void login(ActionEvent event) throws Exception {
 
+        currentUser = database.Funcs.LoginUser(Main.con,login_userIDField.getText(),login_passwordField.getText());
         //  TEMPORARY !!!
-        if(login_passwordField.getText().equals("1")) {
-            if(login_userIDField.getText().equals("A")) {
-                username = "Kamronbek Rustamov";
+        if(currentUser != null) {
+            username = currentUser.getName();
+            if(currentUser.getUType() == UserType.Admin) {
                 Main.setScene("/main/common/AdminFrame.fxml");
-            } else if(login_userIDField.getText().equals("L")) {
-                username = "Kamronbek Rustamov";
+            } else if(currentUser.getUType() == UserType.Librarian) {
                 Main.setScene("/main/common/LibrarianFrame.fxml");
-            } else {
-                username = login_userIDField.getText();
+            } else if(currentUser.getUType() == UserType.Reader)
                 Main.setScene("/main/common/ReaderFrame.fxml");
             }
-        } else {
-            welcomeMessage.setText("User Not Found!");
+         else {
+            welcomeMessage.setText("Invalid Input!");
             welcomeMessage.setTextFill(Paint.valueOf("#FF8080"));
             login_passwordField.clear();
         }

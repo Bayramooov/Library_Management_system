@@ -1,11 +1,12 @@
 package main.common;
 
+import database.User;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
-import main.User;
+import main.DataCollection;
 
 public class Readers_C {
     @FXML
@@ -25,7 +26,7 @@ public class Readers_C {
         TableColumn<User, Integer> numberOfBorrowedBooksColumn = new TableColumn<>("Number Of Borrowed Books");
         numberOfBorrowedBooksColumn.setMinWidth(280.0); IDColumn.setMaxWidth(280.0);
         numberOfBorrowedBooksColumn.setCellValueFactory(new PropertyValueFactory<>("numberOfBorrowedBooks"));
-        tableView.setItems(User.observableUserList);
+        //tableView.setItems(DataCollection.observableUserList);
         tableView.getColumns().addAll(IDColumn, nameColumn, numberOfBorrowedBooksColumn);
         tableView.setEditable(true);
     }

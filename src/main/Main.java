@@ -53,13 +53,13 @@ public class Main extends Application {
 
     public static void initBooks() throws Exception {
 
-        ArrayList<database.Book> x = database.Funcs.GetBooks(con);
+        ArrayList<database.Book> x = database.Funcs.GetAllBooks(con);
         for(database.Book b: x) {
             DataCollection.observableBookList.add(b);
         }
     }
 
-    public static void initUsers() {
+    /*public static void initUsers() {
         User user1 = new User("U1810036","Kamronbek Rustamov", "1111",10, 0, UserType.Reader);
         User user2 = new User("U1810038","Abdullaev Jaloliddin", "1111",3,1, UserType.Reader);
         User user3 = new User("U1810054","Sadullaev Sobirjon", "1111",5,0, UserType.Reader);
@@ -70,5 +70,5 @@ public class Main extends Application {
         User.observableUserList.add(user3);
         User.observableUserList.add(user4);
         User.observableUserList.add(user5);
-    }
+    }*/
 }

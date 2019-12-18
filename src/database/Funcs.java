@@ -1,11 +1,5 @@
 package database;
 
-import com.mysql.cj.x.protobuf.MysqlxPrepare;
-import database.BorrowedBook;
-import database.Librarian;
-import database.UserType;
-
-import javax.swing.*;
 import java.sql.*;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -13,14 +7,14 @@ import java.util.Hashtable;
 
 public  class Funcs {
 
-    public static boolean IsEmptyOrNull(String text)
+    private static boolean IsEmptyOrNull(String text)
     {
         if(text==null||text=="")
             return true;
         return false;
     }
 
-    public static int GetTypeID(UserType type)
+    private static int GetTypeID(UserType type)
     {
         if(type==UserType.Librarian)
             return 1;
@@ -30,7 +24,7 @@ public  class Funcs {
             return 3;
     }
 
-    public static UserType GetUserType(int typeId)
+    private static UserType GetUserType(int typeId)
     {
             if(typeId==1)
             {
@@ -46,7 +40,7 @@ public  class Funcs {
             }
     }
 
-    public static boolean IsAlreadyRegistered(Connection conn,String userId) throws Exception
+    private static boolean IsAlreadyRegistered(Connection conn,String userId) throws Exception
     {
         String getUserFromDatabase="Select user_id as 'ID',password,user_type as 'type'" +
                 " from Accounts where user_id=?";
@@ -93,14 +87,15 @@ public  class Funcs {
                    if(rs.getString("password").compareTo(password)==0)
                    {
                        return  new User(rs.getInt("ID"),rs.getString("name"),
-                               rs.getString("user_id"),GetUserType(rs.getInt("user_type")));
+                               rs.getString("user_id"),rs.getString("password"),
+                               GetUserType(rs.getInt("user_type")));
                    }
                }
            }
         return null;
     }
 
-    public static ArrayList<Book> GetBooks(Connection con)throws Exception
+    public static ArrayList<Book> GetAllBooks(Connection con)throws Exception
     {
         String query="SELECT * FROM Books";
         Statement st=con.createStatement();
@@ -189,7 +184,7 @@ public  class Funcs {
         return books;
     }
 
-    public static ArrayList<Reader> GetReaders(Connection con)throws Exception
+    public static ArrayList<User> GetReaders(Connection con)throws Exception
     {
         String select="SELECT * FROM Accounts WHERE user_type=2";
         String getBrwdBooks="SELECT COUNT(*) as count FROM BorrowedBooks WHERE borrower_id=?";
@@ -198,7 +193,7 @@ public  class Funcs {
         ResultSet rs=st.executeQuery(select);
         ResultSet rnob;
         int nob;
-        ArrayList<Reader> readers=new ArrayList<Reader>();
+        ArrayList<User> readers=new ArrayList<User>();
         while(rs.next())
         {
             ps.setInt(1,rs.getInt("ID"));
@@ -211,20 +206,25 @@ public  class Funcs {
             {
                 nob=0;
             }
-            readers.add(new Reader(rs.getInt("ID"),rs.getString("name"),rs.getString("user_id"),nob));
+//int tableId, String name, String ID, String password, boolean blocked, int numberOfBooks, UserType  type
+            readers.add(new User(rs.getInt("ID"),rs.getString("name"),
+                    rs.getString("user_id"),rs.getString("password"),
+                    rs.getInt("blocked")==1?true:false,nob,GetUserType(rs.getInt("user_type"))));
         }
         return readers;
     }
 
-    public static ArrayList<Librarian> GetLibrarians(Connection con)throws Exception
+    public static ArrayList<User> GetLibrarians(Connection con)throws Exception
     {
         String command="SELECT * FROM Accounts WHERE user_type=1";
         Statement st=con.createStatement();
         ResultSet rs=st.executeQuery(command);
-        ArrayList<Librarian> librs=new ArrayList<Librarian>();
+        ArrayList<User> librs=new ArrayList<>();
         while(rs.next())
         {
-            librs.add(new Librarian(rs.getInt("ID"),rs.getString("name"),rs.getString("user_id")));
+            //int tableId,String name,String id,String password,UserType type
+            librs.add(new User(rs.getInt("ID"),rs.getString("name"),
+                    rs.getString("user_id"),rs.getString("password"),GetUserType(rs.getInt("user_type"))));
         }
         return librs;
     }
@@ -270,7 +270,7 @@ public  class Funcs {
         return table;
     }
 
-    public static boolean IsAlreadyBorrowed(Connection con,int bookId,int borrowerId)throws Exception
+    private static boolean IsAlreadyBorrowed(Connection con,int bookId,int borrowerId)throws Exception
     {
         String cmd="Select * from BorrowedBooks where borrower_id=? and book_id=?";
         PreparedStatement ps=con.prepareStatement(cmd);
@@ -420,20 +420,6 @@ public  class Funcs {
         return false;
     }
 
-    public static ArrayList<User> GetBlockedUsers(Connection con) throws SQLException
-    {
-        String getBlockedUsers="SELECT * FROM Accounts WHERE blocked=1";
-        Statement st=con.createStatement();
-        ResultSet rs=st.executeQuery(getBlockedUsers);
-        ArrayList<User> users=new ArrayList<User>();
-        while(rs.next())
-        {
-            users.add(new User(rs.getInt("ID"),rs.getString("name"),
-                    rs.getString("user_id"),GetUserType(rs.getInt("user_type"))));
-        }
-        return users;
-    }
-
     public static boolean AddNewUser(Connection con,String userId,String password,String userName,UserType userType) throws Exception
     {
         if(IsAlreadyRegistered(con,userId))
@@ -493,7 +479,7 @@ public  class Funcs {
         return true;
     }
 
-    public static boolean IsBookAlreadyAdded(Connection con,String title)throws Exception
+    private static boolean IsBookAlreadyAdded(Connection con,String title)throws Exception
     {
         String st="SELECT * FROM Books WHERE title=?";
         PreparedStatement ps=con.prepareStatement(st);
