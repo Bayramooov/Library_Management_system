@@ -21,6 +21,7 @@
          <columnConstraints>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="242.0" minWidth="242.0"/>
             <ColumnConstraints hgrow="SOMETIMES"/>
+            <ColumnConstraints hgrow="SOMETIMES" maxWidth="50.0" minWidth="50.0"/>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="47.0" minWidth="47.0"/>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0"/>
             <ColumnConstraints hgrow="SOMETIMES" maxWidth="20.0" minWidth="20.0"/>
@@ -49,12 +50,17 @@
                   </Label>
                </children>
             </HBox>
-            <Button fx:id="headerBorder_addButton" onMouseClicked="#handleAddButton" text="Add" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button fx:id="headerBorder_editButton" onMouseClicked="#handleEditButton" text="Edit" mnemonicParsing="false" GridPane.columnIndex="2" GridPane.rowIndex="1">
                <font>
                   <Font name="SansSerif" size="14.0"/>
                </font>
             </Button>
-            <Button fx:id="headerBorder_logoutButton" onAction="#handleLogOutButton" mnemonicParsing="false" scaleX="0.8" scaleY="0.8" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <Button fx:id="headerBorder_addButton" onMouseClicked="#handleAddButton" text="Add" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <font>
+                  <Font name="SansSerif" size="14.0"/>
+               </font>
+            </Button>
+            <Button fx:id="headerBorder_logoutButton" onAction="#handleLogOutButton" mnemonicParsing="false" scaleX="0.8" scaleY="0.8" GridPane.columnIndex="4" GridPane.rowIndex="1">
                <graphic>
                   <SVGPath content="M 11.835938 0.136719 C 10.796875 0.484375 9.917969 1.457031 9.699219 2.515625 C 9.589844 3.019531 9.566406 9.601562 9.667969 9.957031 C 9.878906 10.703125 10.882812 10.972656 11.445312 10.441406 C 11.820312 10.082031 11.804688 10.277344 11.835938 6.382812 C 11.867188 2.433594 11.839844 2.699219 12.285156 2.363281 L 12.5 2.199219 L 27.109375 2.199219 L 27.347656 2.355469 C 27.488281 2.449219 27.632812 2.613281 27.707031 2.769531 L 27.832031 3.027344 L 27.832031 26.972656 L 27.707031 27.230469 C 27.632812 27.386719 27.488281 27.550781 27.347656 27.644531 L 27.109375 27.800781 L 12.5 27.800781 L 12.285156 27.636719 C 11.839844 27.300781 11.867188 27.566406 11.835938 23.617188 C 11.804688 19.722656 11.820312 19.917969 11.445312 19.558594 C 10.882812 19.027344 9.878906 19.296875 9.667969 20.042969 C 9.566406 20.398438 9.589844 26.980469 9.699219 27.484375 C 9.925781 28.5625 10.851562 29.574219 11.894531 29.882812 C 12.449219 30.046875 27.113281 30.066406 27.660156 29.90625 C 28.757812 29.578125 29.628906 28.691406 29.910156 27.625 C 30.046875 27.101562 30.046875 2.898438 29.910156 2.375 C 29.628906 1.308594 28.757812 0.421875 27.660156 0.09375 C 27.375 0.0078125 26.574219 0 19.777344 0.00390625 L 12.214844 0.0078125 L 11.835938 0.136719 M 5.976562 8.648438 C 5.714844 8.761719 0.269531 14.183594 0.113281 14.484375 C -0.0351562 14.769531 -0.0351562 15.230469 0.113281 15.515625 C 0.253906 15.78125 5.699219 21.214844 5.957031 21.351562 C 6.539062 21.644531 7.316406 21.285156 7.496094 20.644531 C 7.660156 20.0625 7.652344 20.054688 5.578125 17.972656 L 3.722656 16.113281 L 12.65625 16.109375 C 22.742188 16.105469 21.945312 16.144531 22.292969 15.652344 C 22.691406 15.089844 22.460938 14.226562 21.851562 13.992188 C 21.609375 13.902344 20.941406 13.894531 12.65625 13.890625 L 3.722656 13.886719 L 5.550781 12.054688 C 6.554688 11.046875 7.40625 10.152344 7.4375 10.058594 C 7.769531 9.167969 6.84375 8.269531 5.976562 8.648438 " fill="#333333"/>
                </graphic>

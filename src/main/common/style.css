@@ -142,3 +142,19 @@
 	-fx-scale-y: 1.0;
 	-fx-scale-x: 1.0;
 }
+
+/****************************************************************************/
+
+#headerBorder_editButton {
+	-fx-background-color: #ffffff;
+	-fx-background: transparent;
+	-fx-effect: dropshadow(three-pass-box, #cccccc, 7, 0, 0, 0);
+	-fx-cursor: hand;
+} #headerBorder_editButton:hover {
+	-fx-background-color: #FAFAFA;
+	-fx-scale-y: 1.03;
+	-fx-scale-x: 1.03;
+} #headerBorder_editButton:pressed {
+	-fx-scale-y: 1;
+	-fx-scale-x: 1;
+}

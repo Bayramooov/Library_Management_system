@@ -38,6 +38,15 @@ public class MainFrame {
     private Button leftBorder_blockedReadersButton;
 
 
+
+    // NEW EDIT BUTTON
+    @FXML
+    private Button headerBorder_editButton;
+    @FXML
+    public void handleEditButton() {}
+    ///////////////////////////////////////////
+
+
     //  INITIALIZING THE USERNAME & PANEL NAME. TO BE CONTINUED...
     public void initialize() throws IOException {
         username.setText(Login.username);
