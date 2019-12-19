@@ -116,7 +116,7 @@ public class MainFrame {
     @FXML
     public void handleAddButton() throws IOException {
 
-        if(panelName.getText().equals("Students")) {
+        if(panelName.getText().equals("Readers")) {
             if(DataCollection.currentUser.getUType() == database.UserType.Admin) {
                 panelName.setText("New User");
                 GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/UserViewFrame.fxml"));

@@ -17,7 +17,8 @@ public class Readers_C {
     public TextField searchText;
     @FXML
     private TableView tableView;
-    
+
+    public static User chosenUserInTable = null;
 
     // initializing tableView
     public void initialize() {
@@ -35,6 +36,7 @@ public class Readers_C {
 
     // Handles the mouseClick of TableView
     public void handleMouseClick(MouseEvent mouseEvent) {
+
     }
 
     private void initUsers(String string) {

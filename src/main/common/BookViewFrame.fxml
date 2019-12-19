@@ -67,14 +67,14 @@
             <Insets bottom="7.0" left="15.0" right="15.0" top="7.0" />
          </padding>
       </TextField>
-      <TextField id="newBookISBN" layoutX="246.0" layoutY="247.0" promptText="ISBN" styleClass="newForms" GridPane.columnIndex="2" GridPane.rowIndex="6">
+     <!-- <TextField id="newBookISBN" layoutX="246.0" layoutY="247.0" promptText="ISBN" styleClass="newForms" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <font>
             <Font name="SansSerif Regular" size="16.0" />
          </font>
          <padding>
             <Insets bottom="7.0" left="15.0" right="15.0" top="7.0" />
          </padding>
-      </TextField>
+      </TextField>-->
         <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
             <children>
                 <Label id="errorMessage" text="Invalid Input!" textFill="#ff8080">

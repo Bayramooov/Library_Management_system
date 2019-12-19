@@ -58,7 +58,7 @@ public class Main extends Application {
                 while(true) {
                     DashboardPane_C.stats = Funcs.GetCountStatistics(Login.con);
                     DashboardPane_C.top3Books = Funcs.GetTop3Books(con);
-                    Thread.sleep(180000);
+                    Thread.sleep(100000);
                     String url = "jdbc:mysql://37.59.55.185:3306/RWX3BuLgCH"; // database url
                     String userName = "RWX3BuLgCH";
                     String password = "2WMYapbyjH";
