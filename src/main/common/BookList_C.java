@@ -176,11 +176,12 @@ public class BookList_C {
 
     public void handleSearchButton(ActionEvent actionEvent) throws Exception {
 
-        if(MainFrame.pressedPanel.equals("Books") || MainFrame.pressedPanel.equals("My Books"))
+        if(MainFrame.pressedPanel.equals("Books"))
         {
             searchingBooks();
         }
-        else if(MainFrame.pressedPanel.equals("Borrowed Books")) {
+        else if(MainFrame.pressedPanel.equals("My Books") || MainFrame.pressedPanel.equals("Borrowed Books"))
+        {
             searchingBorrowedBooks();
         }
         else
