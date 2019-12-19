@@ -15,7 +15,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<GridPane id="UserViewPanel" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="782.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<GridPane fx:id="UserViewPanel" fx:controller="main.common.creatingFrame" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="526.0" prefWidth="782.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
   <columnConstraints>
       <ColumnConstraints hgrow="SOMETIMES" percentWidth="25.0" />
       <ColumnConstraints hgrow="SOMETIMES" maxWidth="40.0" minWidth="40.0" />
@@ -37,7 +37,7 @@
   </rowConstraints>
    <children>
       <Pane prefHeight="200.0" prefWidth="200.0" styleClass="backgroundPane" GridPane.columnIndex="1" GridPane.columnSpan="3" GridPane.rowIndex="1" GridPane.rowSpan="8" />
-      <TextField id="newUserName" promptText="Name" styleClass="newForms" GridPane.columnIndex="2" GridPane.rowIndex="2">
+      <TextField fx:id="newUserName" promptText="Name" styleClass="newForms" GridPane.columnIndex="2" GridPane.rowIndex="2">
          <font>
             <Font name="SansSerif Regular" size="16.0" />
          </font>
@@ -45,7 +45,7 @@
             <Insets bottom="7.0" left="15.0" right="15.0" top="7.0" />
          </padding>
       </TextField>
-      <TextField id="newUserID" promptText="User ID" styleClass="newForms" GridPane.columnIndex="2" GridPane.rowIndex="3">
+      <TextField fx:id="newUserID" promptText="User ID" styleClass="newForms" GridPane.columnIndex="2" GridPane.rowIndex="3">
          <font>
             <Font name="SansSerif Regular" size="16.0" />
          </font>
@@ -53,19 +53,18 @@
             <Insets bottom="7.0" left="15.0" right="15.0" top="7.0" />
          </padding>
       </TextField>
-      <ComboBox id="newUserType" prefWidth="200.0" promptText="User Type" GridPane.columnIndex="2" GridPane.rowIndex="4">
+      <ComboBox fx:id="newUserType" prefWidth="200.0" promptText="User Type" GridPane.columnIndex="2" GridPane.rowIndex="4">
          <items>
              <FXCollections fx:factory="observableArrayList">
                  <String fx:value="Librarian" />
-                 <String fx:value="Student" />
-                 <String fx:value="Blocked" />
+                 <String fx:value="Reader" />
              </FXCollections>
          </items>
           <padding>
             <Insets bottom="3.0" left="7.0" right="3.0" top="3.0" />
          </padding>
       </ComboBox>
-      <PasswordField id="newUserPass" promptText="Password" styleClass="newForms" GridPane.columnIndex="2" GridPane.rowIndex="5">
+      <PasswordField fx:id="newUserPass" promptText="Password" styleClass="newForms" GridPane.columnIndex="2" GridPane.rowIndex="5">
          <font>
             <Font name="SansSerif Regular" size="16.0" />
          </font>
@@ -75,7 +74,7 @@
       </PasswordField>
       <VBox prefHeight="200.0" prefWidth="100.0" GridPane.columnIndex="2" GridPane.rowIndex="6">
          <children>
-            <Label id="errorMessage" text="Invalid Input!" textFill="#ff8080">
+            <Label fx:id="errorMessage" text="" textFill="#ff8080">
                <font>
                   <Font name="SansSerif Regular" size="14.0" />
                </font>
@@ -86,12 +85,12 @@
          </padding></VBox>
       <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="15.0" GridPane.columnIndex="2" GridPane.rowIndex="7">
          <children>
-            <Button id="newUserCreateButton" mnemonicParsing="false" prefWidth="100.0" styleClass="createButton" text="Create" textFill="WHITE">
+            <Button fx:id="newUserCreateButton" onAction="#handleCreateNewUserButton" mnemonicParsing="false" prefWidth="100.0" styleClass="createButton" text="Create" textFill="WHITE">
                <font>
                   <Font name="System Bold" size="14.0" />
                </font>
             </Button>
-            <Button id="newUserCancelButton" mnemonicParsing="false" prefWidth="100.0" styleClass="cancelButton" text="Cancel" textFill="WHITE">
+            <Button fx:id="newUserCancelButton" mnemonicParsing="false" prefWidth="100.0" styleClass="cancelButton" text="Cancel" textFill="WHITE">
                <font>
                   <Font name="SansSerif Regular" size="14.0" />
                </font>

@@ -133,6 +133,7 @@ public  class Funcs {
         ResultSet rUser;
         String userName;
         String userId;
+        DataCollection.observableBorrowedBookList.clear();
         while(rs.next())
         {
             pUser.setInt(1,rs.getInt("borrower_id"));
@@ -423,6 +424,21 @@ public  class Funcs {
             }
         }
         return false;
+    }
+
+    public static int GetUserTableId(Connection con,String userId) throws Exception
+    {
+        if(IsEmptyOrNull(userId))
+            return 0;
+        String select="SELECT ID FROM Accounts WHERE user_id=?";
+        PreparedStatement ps=con.prepareStatement(select);
+        ps.setString(1,userId);
+        ResultSet rs=ps.executeQuery();
+        if(rs.next())
+        {
+            return rs.getInt("ID");
+        }
+        return 0;
     }
 
     public static boolean ReturnBook(Connection con,int bookId,int borrowerId)throws Exception

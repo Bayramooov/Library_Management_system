@@ -1,10 +1,8 @@
 package main.common;
 
-import database.Book;
-import database.BorrowedBook;
-import database.Funcs;
-import database.User;
+import database.*;
 import javafx.event.ActionEvent;
+import javafx.event.Event;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
@@ -14,8 +12,10 @@ import javafx.scene.input.MouseEvent;
 
 import main.DataCollection;
 
+import java.io.IOException;
 import java.util.Optional;
 
+import static main.DataCollection.currentUser;
 import static main.DataCollection.observableReadersList;
 
 
@@ -24,6 +24,9 @@ public class BookList_C {
     private TextField searchingText;
     @FXML
     private TableView tableView;
+
+    private String username;
+    public static Book book;
 
     // initializing tableView
     public void initialize() throws Exception {
@@ -39,19 +42,6 @@ public class BookList_C {
 
     // Handles the mouseClick of TableView
     public void handleMouseClick(MouseEvent mouseEvent) {
-/*        ContextMenu contextMenu = new ContextMenu();
-
-        MenuItem menuItem1 = new MenuItem("Issue");
-        MenuItem menuItem2 = new MenuItem("Delete");
-        MenuItem menuItem3 = new MenuItem("Edit");
-        MenuItem menuItem4 = new MenuItem("Return");
-        // add menu items to menu
-        contextMenu.getItems().add(menuItem1);
-        contextMenu.getItems().add(menuItem2);
-        contextMenu.getItems().add(menuItem3);
-        contextMenu.getItems().add(menuItem4);
-*/
-
         tableView.setOnMouseClicked(mouseEvent1 -> {
             if (mouseEvent1.getButton().equals(MouseButton.SECONDARY)) {
                 if(MainFrame.pressedPanel.equals("Borrowed Books")) {
@@ -62,44 +52,7 @@ public class BookList_C {
                 }
             }
         });
-/*
-        tableView.addEventHandler(MouseEvent.MOUSE_CLICKED, new EventHandler<MouseEvent>() {
-
-            @Override
-            public void handle(MouseEvent t) {
-                if(t.getButton() == MouseButton.SECONDARY) {
-                    contextMenu.show(tableView, t.getScreenX(), t.getScreenY());
-                }
-            }
-        });*/
-
     }
-
-  /*  public void showInfo(Book temp) {
-        Alert alert = new Alert(Alert.AlertType.INFORMATION);
-        alert.setTitle("" + temp.getID());
-        alert.setResizable(false);
-        alert.initModality(Modality.WINDOW_MODAL);
-        alert.setContentText("TITLE: " + temp.getTitle());
-        alert.setContentText("Author: " + temp.getAuthor());
-
-        alert.showAndWait();
-    }
-*/
-
-  /*  public String tex() throws IOException {
-        TextInputDialog dialog = new TextInputDialog();
-        dialog.setTitle("Will you return a book or borrow?");
-        dialog.setHeaderText("Enter Reader ID");
-        dialog.getDialogPane();
-
-        Optional<String> result = dialog.showAndWait();
-        if (result.isPresent()) {
-            return result.get();
-        }
-
-        return null;
-    }*/
 
     private void initBooks() throws Exception {
       TableColumn<database.Book, String> titleColumn = new TableColumn<>("Title");
@@ -207,6 +160,7 @@ public class BookList_C {
         contextMenu.getItems().add(item1);
         contextMenu.show(tableView,mouseEvent.getScreenX(),mouseEvent.getScreenY());
         item1.setOnAction(event -> {
+            contextMenu.setAutoHide(true);
             try {
                 Funcs.ReturnBook(Login.con,b.BookId,b.BorrowerId);
             } catch (Exception e) {
@@ -217,13 +171,17 @@ public class BookList_C {
     }
 
     public void showContextMenuForBooks(MouseEvent mouseEvent) {
-        Book b = (Book)tableView.getSelectionModel().getSelectedItem();
+        if(currentUser.getUType() == UserType.Reader) {
+
+        } else {book = (Book)tableView.getSelectionModel().getSelectedItem();
         ContextMenu contextMenu = new ContextMenu();
+
         MenuItem item1 = new MenuItem("Borrow");
-        MenuItem item2 = new MenuItem("Edit");
         MenuItem item3 = new MenuItem("Delete");
-        MenuItem item4 = new MenuItem("View");
-        contextMenu.getItems().addAll(item1, item2, item3, item4);
+        contextMenu.getItems().add(item3);
+        if(currentUser.getUType() == UserType.Librarian) {
+            contextMenu.getItems().add(item1);
+        }
         contextMenu.show(tableView,mouseEvent.getScreenX(),mouseEvent.getScreenY());
         item1.setOnAction(event -> {
             TextInputDialog dialog = new TextInputDialog();
@@ -231,22 +189,34 @@ public class BookList_C {
             dialog.setHeaderText("Enter Reader ID");
             Optional<String> result = dialog.showAndWait();
             if(result.isPresent()) {
-
-                try {
-                    Funcs.BorrowBook(Login.con,b.ID,findBorrowerId(result.toString()));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
+             String s = result.toString().substring(9,17);
+             username = s;
+             new UpdateBorrowedBooks().start();
             }
         });
+
+
+        item3.setOnAction(event-> {
+            try {
+                Funcs.DeleteBook(Login.con, book.ID);
+                DataCollection.observableBookList.remove(book);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+        }
     }
 
-    public int findBorrowerId(String s) {
-        for(User u: DataCollection.observableReadersList) {
-            if(u.ID.equals(s)) {
-                return u.TableId;
+    class UpdateBorrowedBooks extends Thread {
+        @Override
+        public void run() {
+            try {
+                int i = Funcs.GetUserTableId(Login.con,username);
+                Funcs.BorrowBook(Login.con,book.ID,i);
+                Funcs.GetAllBorrowedBooks(Login.con);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
-        return 0;
     }
 }

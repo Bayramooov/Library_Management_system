@@ -58,6 +58,7 @@ public class MainFrame {
     @FXML
     public void handleDashboardButton() throws IOException {
         panelName.setText("Dashboard");
+        pressedPanel = "Dashboard";
         GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/DashboardPane.fxml"));
         mainFrame.setCenter(dashboardPanel);
     }
@@ -116,19 +117,19 @@ public class MainFrame {
     @FXML
     public void handleAddButton() throws IOException {
 
-        if(panelName.getText().equals("Readers")) {
+        if(pressedPanel.equals("Readers")) {
             if(DataCollection.currentUser.getUType() == database.UserType.Admin) {
                 panelName.setText("New User");
                 GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/UserViewFrame.fxml"));
                 mainFrame.setCenter(dashboardPanel);
             }
         }
-        else if(panelName.getText().equals("Librarians")) {
+        else if(pressedPanel.equals("Librarians")) {
             panelName.setText("New User");
             GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/UserViewFrame.fxml"));
             mainFrame.setCenter(dashboardPanel);
         }
-        else if(panelName.getText().equals("Books")) {
+        else if(pressedPanel.equals("Books")) {
             panelName.setText("New Book");
             GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/BookViewFrame.fxml"));
             mainFrame.setCenter(dashboardPanel);

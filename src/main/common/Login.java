@@ -7,6 +7,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.paint.Paint;
 import main.Main;
 
@@ -57,6 +58,12 @@ public class Login {
             welcomeMessage.setText("Invalid Input!");
             welcomeMessage.setTextFill(Paint.valueOf("#FF8080"));
             login_passwordField.clear();
+        }
+    }
+
+    public void handleKeyPressedButton(KeyEvent keyEvent) throws Exception {
+        if(keyEvent.getCode().toString().equals("ENTER")) {
+            login(new ActionEvent());
         }
     }
 }

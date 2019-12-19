@@ -60,7 +60,7 @@
                         <Font name="SansSerif Regular" size="16.0" />
                     </font>
                 </TextField>
-                <PasswordField fx:id="login_passwordField" promptText="Password">
+                <PasswordField fx:id="login_passwordField" onKeyPressed="#handleKeyPressedButton" promptText="Password">
                     <font>
                         <Font name="SansSerif Regular" size="16.0" />
                     </font>
