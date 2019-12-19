@@ -15,4 +15,6 @@ public class DataCollection {
     public static ObservableList<User> observableBlockedReadersList = FXCollections.observableArrayList();
     public static ObservableList<BorrowedBook> observableMyBookList = FXCollections.observableArrayList();
     public static ObservableList<Book> observableSearchingBooksList = FXCollections.observableArrayList();
+    public static ObservableList<BorrowedBook> observableSearchingBorrowedBooksList = FXCollections.observableArrayList();
+    public static ObservableList<User> observableSearchingUsersList=FXCollections.observableArrayList();
 }

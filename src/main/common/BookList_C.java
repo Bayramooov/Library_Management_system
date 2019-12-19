@@ -1,6 +1,5 @@
 package main.common;
 
-import database.Book;
 import database.Funcs;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -11,8 +10,6 @@ import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 
 import main.DataCollection;
-
-
 
 
 public class BookList_C {
@@ -118,10 +115,19 @@ public class BookList_C {
   }
 
   private void searchingBooks() throws Exception {
-      Funcs.Search(Login.con,this.searchingText.getText());
+      Funcs.SearchBooks(Login.con,this.searchingText.getText());
       tableView.getItems().removeAll();
       tableView.setItems(DataCollection.observableSearchingBooksList);
+
   }
+  private void searchingBorrowedBooks() throws Exception
+  {
+      Funcs.SearchBorrowedBooks(Login.con,this.searchingText.getText());
+      tableView.getItems().removeAll();
+
+      tableView.setItems(DataCollection.observableSearchingBorrowedBooksList);
+  }
+
 
   private void initMyBooks() {
 
@@ -169,7 +175,17 @@ public class BookList_C {
   }
 
     public void handleSearchButton(ActionEvent actionEvent) throws Exception {
-      searchingBooks();
 
+        if(MainFrame.pressedPanel.equals("Books") || MainFrame.pressedPanel.equals("My Books"))
+        {
+            searchingBooks();
+        }
+        else if(MainFrame.pressedPanel.equals("Borrowed Books")) {
+            searchingBorrowedBooks();
+        }
+        else
+        {
+            throw new Exception("Pash Nax");
+        }
     }
 }

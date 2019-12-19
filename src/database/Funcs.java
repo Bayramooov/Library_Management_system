@@ -1,5 +1,6 @@
 package database;
 
+import javafx.collections.ObservableList;
 import main.DataCollection;
 
 import java.sql.*;
@@ -31,17 +32,11 @@ public  class Funcs {
     private static UserType GetUserType(int typeId)
     {
             if(typeId==1)
-            {
                 return UserType.Librarian;
-            }
             else if(typeId==2)
-            {
                 return UserType.Reader;
-            }
             else
-            {
                 return UserType.Admin;
-            }
     }
 
     private static boolean IsAlreadyRegistered(Connection conn,String userId) throws Exception
@@ -52,26 +47,8 @@ public  class Funcs {
         ps.setString(1,userId);
         ResultSet rs=ps.executeQuery();
         if(rs.next())
-        {
-            return true;
-        }
+        { return true; }
         return  false;
-    }
-
-    public static void CreateUserTable(Connection conn, String tableName) throws Exception
-    {
-        String createTableCommand="CREATE TABLE IF NOT EXISTS "+tableName+" (" +
-            " ID int auto_increment," +
-            "borrowed_book_id int not null," +
-            "taken int not null default 0," +
-            "PRIMARY KEY(ID));" ;
-
-        String addForeignKey=" ALTER TABLE " +tableName+
-                " ADD FOREIGN KEY FK_BorrowedId (borrowed_book_id)" +
-                " REFERENCES BorrowedBooks(ID);";
-        Statement st=conn.createStatement();
-        st.executeUpdate(createTableCommand);
-        st.executeUpdate(addForeignKey);
     }
 
     public static User LoginUser(Connection conn,String userId,String password)throws Exception
@@ -169,6 +146,7 @@ public  class Funcs {
             );
         }
     }
+
     public static ArrayList<Book> GetTop3Books(Connection con)throws Exception
     {
         String command="SELECT * FROM Books ORDER BY taken DESC Limit 3";
@@ -182,21 +160,69 @@ public  class Funcs {
         return bks;
     }
 
-    public static void Search(Connection con,String searchPattern)throws Exception
+    public static void SearchBooks(Connection con, String searchPattern)throws Exception
     {
-        DataCollection.observableSearchingBooksList.clear();
         searchPattern='%'+searchPattern+'%';
         String command="SELECT * FROM Books WHERE title LIKE ? OR author LIKE ?";
         PreparedStatement ps=con.prepareStatement(command);
         ps.setString(1,searchPattern);
         ps.setString(2,searchPattern);
         ResultSet rs=ps.executeQuery();
-
+        DataCollection.observableSearchingBooksList.clear();
         while(rs.next())
         {
             DataCollection.observableSearchingBooksList.add(new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
                     rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books")));
-            System.out.println(rs.getString("title"));
+        }
+    }
+
+    public static void SearchBorrowedBooks(Connection con,String searchPattern) throws SQLException
+    {
+        String getBooks="SELECT b.*,bb.borrow_date,bb.return_date,book_id,borrower_id FROM BorrowedBooks AS bb " +
+                " JOIN Books AS b " +
+                " ON bb.book_id=b.ID WHERE b.title LIKE ? OR b.author LIKE ?";
+        String getUser="SELECT user_id,name FROM Accounts WHERE ID=?";
+        searchPattern='%'+searchPattern+'%';
+        PreparedStatement pUser=con.prepareStatement(getUser);
+        PreparedStatement pBook=con.prepareStatement(getBooks);
+        pBook.setString(1,searchPattern);
+        pBook.setString(2,searchPattern);
+        ResultSet rs=pBook.executeQuery();
+        ResultSet rUser;
+        String userName;
+        String userId;
+        DataCollection.observableSearchingBorrowedBooksList.clear();
+        while(rs.next())
+        {
+            pUser.setInt(1,rs.getInt("borrower_id"));
+            rUser=pUser.executeQuery();
+            rUser.next();
+            userName=rUser.getString("name");
+            userId=rUser.getString("user_id");
+            DataCollection.observableSearchingBorrowedBooksList.add(new BorrowedBook((new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
+                    rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books"))),
+                    rs.getInt("book_id"),rs.getInt("borrower_id"),userName,userId,rs.getString("borrow_date"),rs.getString("return_date"))
+            );
+        }
+    }
+
+    public static void SearchUsers(Connection con,UserType userType,boolean blocked,String searchPattern) throws SQLException
+    {
+        int userTypeId=GetTypeID(userType);
+        searchPattern='%'+searchPattern+'%';
+        String command="SELECT * FROM Accounts WHERE user_type=? AND blocked=? AND (user_id LIKE ? OR name LIKE ?)";
+        PreparedStatement ps=con.prepareStatement(command);
+        ps.setInt(1,userTypeId);
+        ps.setBoolean(2,blocked);
+        ps.setString(3,searchPattern);
+        ps.setString(4,searchPattern);
+        ResultSet rs=ps.executeQuery();
+        DataCollection.observableSearchingUsersList.clear();
+        while(rs.next())
+        {
+            //int tableId,String name,String id,String password,UserType type
+            DataCollection.observableSearchingUsersList.add(new User(rs.getInt("ID"),rs.getString("name"),
+                    rs.getString("user_id"),rs.getString("password"),GetUserType(rs.getInt("user_type"))));
         }
     }
 

@@ -1,16 +1,23 @@
 package main.common;
 
+import database.Funcs;
 import database.User;
+import database.UserType;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.input.MouseEvent;
 import main.DataCollection;
 
 public class Readers_C {
     @FXML
+    public TextField searchText;
+    @FXML
     private TableView tableView;
+    
 
     // initializing tableView
     public void initialize() {
@@ -56,5 +63,21 @@ public class Readers_C {
         tableView.getColumns().addAll(IDColumn, nameColumn, passwordColumn);
         tableView.setEditable(true);
     }
-
+    private void flushTableView()
+    {
+        tableView.getItems().removeAll();
+        tableView.setItems(DataCollection.observableSearchingUsersList);
+    }
+    public void onSearchButtonPressed(ActionEvent actionEvent) throws Exception
+    {
+        if(MainFrame.pressedPanel.equals("Readers"))
+           Funcs.SearchUsers(Login.con, UserType.Reader,false,searchText.getText());
+        else if(MainFrame.pressedPanel.equals("Blocked Readers"))
+            Funcs.SearchUsers(Login.con, UserType.Reader,true,searchText.getText());
+        else if(MainFrame.pressedPanel.equals("Librarians"))
+            Funcs.SearchUsers(Login.con, UserType.Librarian,false,searchText.getText());
+        else
+            throw new Exception("Pash Nax");
+        flushTableView();
+    }
 }
