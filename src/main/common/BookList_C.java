@@ -124,10 +124,11 @@ public class BookList_C {
   {
       if(isItReadersFrame)
           Funcs.SearchBorrowedBooksOfReader(Login.con,DataCollection.currentUser.TableId,this.searchingText.getText());
+
       else
           Funcs.SearchBorrowedBooks(Login.con,this.searchingText.getText());
 
-      tableView.getItems().removeAll();
+      tableView.getItems().clear();
       tableView.setItems(DataCollection.observableSearchingBorrowedBooksList);
   }
 
@@ -190,10 +191,6 @@ public class BookList_C {
         else if(MainFrame.pressedPanel.equals("My Books"))
         {
             searchingBorrowedBooks(true);
-        }
-        else
-        {
-            throw new Exception("Pash Nax");
         }
     }
 }

@@ -100,7 +100,7 @@ public  class Funcs {
         PreparedStatement pUser=con.prepareStatement(getUser);
         PreparedStatement pBook=con.prepareStatement(getBooks);
         pBook.setInt(1,borrowerId);
-
+        DataCollection.observableMyBookList.clear();
         ResultSet rs=pBook.executeQuery();
         ResultSet rUser;
         String userName;
