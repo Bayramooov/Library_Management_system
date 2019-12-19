@@ -120,11 +120,14 @@ public class BookList_C {
       tableView.setItems(DataCollection.observableSearchingBooksList);
 
   }
-  private void searchingBorrowedBooks() throws Exception
+  private void searchingBorrowedBooks(boolean isItReadersFrame) throws Exception
   {
-      Funcs.SearchBorrowedBooks(Login.con,this.searchingText.getText());
-      tableView.getItems().removeAll();
+      if(isItReadersFrame)
+          Funcs.SearchBorrowedBooksOfReader(Login.con,DataCollection.currentUser.TableId,this.searchingText.getText());
+      else
+          Funcs.SearchBorrowedBooks(Login.con,this.searchingText.getText());
 
+      tableView.getItems().removeAll();
       tableView.setItems(DataCollection.observableSearchingBorrowedBooksList);
   }
 
@@ -175,14 +178,18 @@ public class BookList_C {
   }
 
     public void handleSearchButton(ActionEvent actionEvent) throws Exception {
-
+//
         if(MainFrame.pressedPanel.equals("Books"))
         {
             searchingBooks();
         }
-        else if(MainFrame.pressedPanel.equals("My Books") || MainFrame.pressedPanel.equals("Borrowed Books"))
+        else if(MainFrame.pressedPanel.equals("Borrowed Books"))
         {
-            searchingBorrowedBooks();
+            searchingBorrowedBooks(false);
+        }
+        else if(MainFrame.pressedPanel.equals("My Books"))
+        {
+            searchingBorrowedBooks(true);
         }
         else
         {

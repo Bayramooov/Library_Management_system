@@ -176,17 +176,8 @@ public  class Funcs {
         }
     }
 
-    public static void SearchBorrowedBooks(Connection con,String searchPattern) throws SQLException
+    private static void BorrowedBookGetter(Connection con,PreparedStatement pUser,PreparedStatement pBook) throws Exception
     {
-        String getBooks="SELECT b.*,bb.borrow_date,bb.return_date,book_id,borrower_id FROM BorrowedBooks AS bb " +
-                " JOIN Books AS b " +
-                " ON bb.book_id=b.ID WHERE b.title LIKE ? OR b.author LIKE ?";
-        String getUser="SELECT user_id,name FROM Accounts WHERE ID=?";
-        searchPattern='%'+searchPattern+'%';
-        PreparedStatement pUser=con.prepareStatement(getUser);
-        PreparedStatement pBook=con.prepareStatement(getBooks);
-        pBook.setString(1,searchPattern);
-        pBook.setString(2,searchPattern);
         ResultSet rs=pBook.executeQuery();
         ResultSet rUser;
         String userName;
@@ -199,11 +190,41 @@ public  class Funcs {
             rUser.next();
             userName=rUser.getString("name");
             userId=rUser.getString("user_id");
+            System.out.println(rs.getString("title"));
             DataCollection.observableSearchingBorrowedBooksList.add(new BorrowedBook((new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
                     rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books"))),
                     rs.getInt("book_id"),rs.getInt("borrower_id"),userName,userId,rs.getString("borrow_date"),rs.getString("return_date"))
             );
         }
+    }
+
+    public static void SearchBorrowedBooks(Connection con,String searchPattern) throws Exception
+    {
+        String getBooks="SELECT b.*,bb.borrow_date,bb.return_date,book_id,borrower_id FROM BorrowedBooks AS bb " +
+                " JOIN Books AS b " +
+                " ON bb.book_id=b.ID WHERE b.title LIKE ? OR b.author LIKE ?";
+        String getUser="SELECT user_id,name FROM Accounts WHERE ID=?";
+        searchPattern='%'+searchPattern+'%';
+        PreparedStatement pUser=con.prepareStatement(getUser);
+        PreparedStatement pBook=con.prepareStatement(getBooks);
+        pBook.setString(1,searchPattern);
+        pBook.setString(2,searchPattern);
+        BorrowedBookGetter(con,pUser,pBook);
+    }
+
+    public static void SearchBorrowedBooksOfReader(Connection con,int readerTableId,String searchPattern) throws Exception
+    {
+        String getBooks="SELECT b.*,bb.borrow_date,bb.return_date,bb.book_id,bb.borrower_id FROM BorrowedBooks AS bb " +
+                " JOIN Books AS b " +
+                " ON bb.book_id=b.ID WHERE bb.borrower_id=? AND (b.title LIKE ? OR b.author LIKE ?)";
+        String getUser="SELECT user_id,name FROM Accounts WHERE ID=?";
+        searchPattern='%'+searchPattern+'%';
+        PreparedStatement pUser=con.prepareStatement(getUser);
+        PreparedStatement pBook=con.prepareStatement(getBooks);
+        pBook.setInt(1,readerTableId);
+        pBook.setString(2,searchPattern);
+        pBook.setString(3,searchPattern);
+        BorrowedBookGetter(con,pUser,pBook);
     }
 
     public static void SearchUsers(Connection con,UserType userType,boolean blocked,String searchPattern) throws SQLException
