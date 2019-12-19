@@ -1,12 +1,15 @@
 package main.common;
+import database.Book;
 import database.Funcs;
 import database.UserType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import javafx.util.StringConverter;
 import main.DataCollection;
 
+import java.nio.file.LinkOption;
 import java.time.LocalDate;
 
 public class creatingFrame {
@@ -46,17 +49,57 @@ public class creatingFrame {
     @FXML
     private Button newBookCancelButton;
 
+    public void initialize() {
+        if(MainFrame.pressedPanel.equals("Edit User")) {
+            newUserName.setText(Readers_C.chosenUserInTable.Name);
+            newUserID.setText(Readers_C.chosenUserInTable.ID);
+            newUserPass.setText(Readers_C.chosenUserInTable.Password);
+            newUserType.getSelectionModel().clearAndSelect(Readers_C.chosenUserInTable.getUType() == UserType.Reader?1:0);
+            newUserCreateButton.setText("Change");
+        }
+        else if(MainFrame.pressedPanel.equals("Edit Book")) {
+            newBookAuthor.setText(BookList_C.book.Author);
+            newBookTitle.setText(BookList_C.book.Title);
+            newBookSubject.setText(BookList_C.book.Subject);
+            newBookNumbers.setText("" + BookList_C.book.AvailableBooks);
+            newBooksCreateButton.setText("Change");
+        }
+    }
+
 
     public void handleCreateNewUserButton(ActionEvent actionEvent) throws Exception {
-        if(newUserType.getSelectionModel().getSelectedItem().equals("Reader")) {
-            Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Reader);
+
+        if(MainFrame.pressedPanel.equals("New User")) {
+            if(newUserType.getSelectionModel().getSelectedItem().equals("Reader")) {
+                Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Reader);
+                DataCollection.observableReadersList.add(Funcs.LoginUser(Login.con,newUserID.getText(),newUserPass.getText()));
+            } else {
+                Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Librarian);
+                DataCollection.observableLibrarianList.add(Funcs.LoginUser(Login.con,newUserID.getText(),newUserPass.getText()));
+            }
         } else {
-            Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Librarian);
+
+            if(newUserType.getSelectionModel().getSelectedItem().equals("Reader")) {
+            DataCollection.observableReadersList.remove(Readers_C.chosenUserInTable);
+            Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Reader);
+            DataCollection.observableReadersList.add(Funcs.LoginUser(Login.con,newUserID.getText(),newUserPass.getText()));
+            } else {
+                DataCollection.observableLibrarianList.remove(Readers_C.chosenUserInTable);
+                Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Librarian);
+                DataCollection.observableLibrarianList.add(Funcs.LoginUser(Login.con,newUserID.getText(),newUserPass.getText()));
+            }
         }
-        DataCollection.observableReadersList.add(Funcs.LoginUser(Login.con,newUserID.getText(),newUserPass.getText()));
+        Readers_C.chosenUserInTable = null;
+
     }
 
     public void handleCreateBookButton(ActionEvent actionEvent) throws Exception {
+        if(MainFrame.pressedPanel.equals("Edit Book")) {
+            DataCollection.observableBookList.remove(BookList_C.book);
+        }
+
         Funcs.AddNewBook(Login.con,newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText()));
+        DataCollection.observableBookList.add(new Book(Funcs.GetBookTableId(Login.con,newBookTitle.getText()),newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue().toString(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText())));
+        BookList_C.book = null;
     }
 }

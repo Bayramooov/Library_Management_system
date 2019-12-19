@@ -1,16 +1,20 @@
 package main.common;
 
+import database.BorrowedBook;
 import database.Funcs;
 import database.User;
 import database.UserType;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.input.MouseButton;
 import javafx.scene.input.MouseEvent;
 import main.DataCollection;
+
+import java.util.Optional;
+
+import static main.DataCollection.currentUser;
 
 public class Readers_C {
     @FXML
@@ -36,7 +40,78 @@ public class Readers_C {
 
     // Handles the mouseClick of TableView
     public void handleMouseClick(MouseEvent mouseEvent) {
+        chosenUserInTable = (User)tableView.getSelectionModel().getSelectedItem();
+        tableView.setOnMouseClicked(mouseEvent1 -> {
+            if (mouseEvent1.getButton().equals(MouseButton.SECONDARY)) {
+                if(MainFrame.pressedPanel.equals("Blocked Readers")) {
+                    unblockReaders(mouseEvent1);
+                }
+                else {
+                    showContextMenuForReaders(mouseEvent1);
+                }
+            }
+        });
+    }
 
+    private void showContextMenuForReaders(MouseEvent mouseEvent1) {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem item1 = new MenuItem("Block");
+        MenuItem item3 = new MenuItem("Delete");
+        contextMenu.getItems().add(item1);
+        if(currentUser.getUType() == UserType.Admin) {
+            contextMenu.getItems().add(item3);
+        }
+        contextMenu.show(tableView,mouseEvent1.getScreenX(),mouseEvent1.getScreenY());
+        item1.setOnAction(event -> {
+            try {
+                chosenUserInTable = (User) tableView.getSelectionModel().getSelectedItem();
+                Funcs.BlockOrUnblockUser(Login.con,chosenUserInTable.TableId,true);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            DataCollection.observableReadersList.remove(chosenUserInTable);
+            chosenUserInTable.setBlocked(true);
+            DataCollection.observableBlockedReadersList.add(chosenUserInTable);
+            DataCollection.observableReadersList.add(chosenUserInTable);
+            chosenUserInTable = null;
+            }
+        );
+
+
+        item3.setOnAction(event-> {
+            try
+            {chosenUserInTable = (User) tableView.getSelectionModel().getSelectedItem();
+                Funcs.DeleteUser(Login.con,chosenUserInTable.TableId,chosenUserInTable.getUType());
+                if(chosenUserInTable.getUType() == UserType.Reader) {
+                    DataCollection.observableReadersList.add(chosenUserInTable);
+                } else {
+                    DataCollection.observableLibrarianList.remove(chosenUserInTable);
+                }
+                chosenUserInTable = null;
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+    }
+
+    private void unblockReaders(MouseEvent mouseEvent1) {
+        ContextMenu contextMenu = new ContextMenu();
+        MenuItem item1 = new MenuItem("Unblock");
+        contextMenu.getItems().add(item1);
+        contextMenu.show(tableView,mouseEvent1.getScreenX(),mouseEvent1.getScreenY());
+        item1.setOnAction(event -> {
+            contextMenu.setAutoHide(true);
+            try {
+                Funcs.BlockOrUnblockUser(Login.con,chosenUserInTable.TableId,false);
+                DataCollection.observableBlockedReadersList.remove(chosenUserInTable);
+                DataCollection.observableReadersList.remove(chosenUserInTable);
+                chosenUserInTable.setBlocked(false);
+                DataCollection.observableReadersList.add(chosenUserInTable);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            chosenUserInTable = null;
+        });
     }
 
     private void initUsers(String string) {

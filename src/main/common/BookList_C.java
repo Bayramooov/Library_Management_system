@@ -26,7 +26,7 @@ public class BookList_C {
     private TableView tableView;
 
     private String username;
-    public static Book book;
+    public static Book book = null;
 
     // initializing tableView
     public void initialize() throws Exception {
@@ -42,6 +42,7 @@ public class BookList_C {
 
     // Handles the mouseClick of TableView
     public void handleMouseClick(MouseEvent mouseEvent) {
+        book = (Book) tableView.getSelectionModel().getSelectedItem();
         tableView.setOnMouseClicked(mouseEvent1 -> {
             if (mouseEvent1.getButton().equals(MouseButton.SECONDARY)) {
                 if(MainFrame.pressedPanel.equals("Borrowed Books")) {
@@ -168,11 +169,11 @@ public class BookList_C {
             }
             DataCollection.observableBorrowedBookList.remove(b);
         });
+        book = null;
     }
 
     public void showContextMenuForBooks(MouseEvent mouseEvent) {
         if(currentUser.getUType() == UserType.Reader) {
-
         } else {book = (Book)tableView.getSelectionModel().getSelectedItem();
         ContextMenu contextMenu = new ContextMenu();
 
@@ -200,6 +201,7 @@ public class BookList_C {
             try {
                 Funcs.DeleteBook(Login.con, book.ID);
                 DataCollection.observableBookList.remove(book);
+                book = null;
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -213,6 +215,7 @@ public class BookList_C {
             try {
                 int i = Funcs.GetUserTableId(Login.con,username);
                 Funcs.BorrowBook(Login.con,book.ID,i);
+                book = null;
                 Funcs.GetAllBorrowedBooks(Login.con);
             } catch (Exception e) {
                 e.printStackTrace();

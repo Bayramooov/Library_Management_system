@@ -43,7 +43,31 @@ public class MainFrame {
     @FXML
     private Button headerBorder_editButton;
     @FXML
-    public void handleEditButton() {}
+    public void handleEditButton() throws IOException {
+        if(pressedPanel.equals("Readers")) {
+            if(DataCollection.currentUser.getUType() == database.UserType.Admin) {
+                panelName.setText("Edit User");
+                pressedPanel = "Edit User";
+                GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/UserViewFrame.fxml"));
+                mainFrame.setCenter(dashboardPanel);
+            }
+        }
+        else if(pressedPanel.equals("Librarians")) {
+            panelName.setText("Edit User");
+            pressedPanel = "Edit User";
+            GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/UserViewFrame.fxml"));
+            mainFrame.setCenter(dashboardPanel);
+        }
+        else if(pressedPanel.equals("Books")) {
+            panelName.setText("Edit Book");
+            pressedPanel = "Edit Book";
+            GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/BookViewFrame.fxml"));
+            mainFrame.setCenter(dashboardPanel);
+        }
+        else{
+            System.out.println("Error");
+        }
+    }
     ///////////////////////////////////////////
 
 

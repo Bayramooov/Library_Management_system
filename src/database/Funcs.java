@@ -634,6 +634,23 @@ public  class Funcs {
         return true;
     }
 
+
+    public static int GetBookTableId(Connection con,String bookName) throws Exception
+    {
+        if(IsEmptyOrNull(bookName))
+            return 0;
+        String select="SELECT ID FROM Books WHERE title=?";
+        PreparedStatement ps=con.prepareStatement(select);
+        ps.setString(1,bookName);
+        ResultSet rs=ps.executeQuery();
+        if(rs.next())
+        {
+            return rs.getInt("ID");
+        }
+        return 0;
+    }
+
+
     public static boolean DeleteBook(Connection con,int id)throws Exception
     {
         String delete="DELETE FROM Books WHERE ID=? ";
