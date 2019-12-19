@@ -17,7 +17,7 @@ import main.DataCollection;
 
 public class BookList_C {
     @FXML
-    private TextField text;
+    private TextField searchingText;
     @FXML
     private TableView tableView;
 
@@ -118,7 +118,7 @@ public class BookList_C {
   }
 
   private void searchingBooks() throws Exception {
-      Funcs.Search(Login.con,text.getText());
+      Funcs.Search(Login.con,this.searchingText.getText());
       tableView.getItems().removeAll();
       tableView.setItems(DataCollection.observableSearchingBooksList);
   }

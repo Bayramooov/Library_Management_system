@@ -17,7 +17,7 @@
     <children>
         <VBox alignment="CENTER_RIGHT" prefHeight="200.0" prefWidth="100.0" style="-fx-background-color: #F5F8FD;">
             <children>
-                <TextField promptText="Search" fx:id="searchingText" style="-fx-background-radius: 36;">
+                <TextField promptText="Search"  fx:id="searchingText" style="-fx-background-radius: 36;">
                     <font>
                         <Font size="14.0" />
                     </font>

@@ -182,19 +182,21 @@ public  class Funcs {
         return bks;
     }
 
-    public static void Search(Connection con,String bookName)throws Exception
+    public static void Search(Connection con,String searchPattern)throws Exception
     {
         DataCollection.observableSearchingBooksList.clear();
-        String command="SELECT * FROM Books WHERE title REGEXP ? OR author REGEXP ?";
+        searchPattern='%'+searchPattern+'%';
+        String command="SELECT * FROM Books WHERE title LIKE ? OR author LIKE ?";
         PreparedStatement ps=con.prepareStatement(command);
-        ps.setString(1,bookName);
-        ps.setString(2,bookName);
+        ps.setString(1,searchPattern);
+        ps.setString(2,searchPattern);
         ResultSet rs=ps.executeQuery();
 
         while(rs.next())
         {
             DataCollection.observableSearchingBooksList.add(new Book(rs.getInt("ID"),rs.getString("title"),rs.getString("author"),
                     rs.getString("published_year"),rs.getString("subject"),rs.getInt("number_of_books")));
+            System.out.println(rs.getString("title"));
         }
     }
 
