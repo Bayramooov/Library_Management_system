@@ -99,12 +99,17 @@ public class creatingFrame {
     public void handleCreateBookButton(ActionEvent actionEvent) throws Exception {
         if(MainFrame.pressedPanel.equals("Edit Book")) {
             DataCollection.observableBookList.remove(BookList_C.book);
-            Funcs.EditBook(Login.con,Funcs.GetBookTableId(Login.con,newBookTitle.getText()),newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText()));
+            Funcs.EditBook(Login.con,Funcs.GetBookTableId(Login.con,BookList_C.book.Title),newBookTitle.getText(),
+                    newBookAuthor.getText(),publishedDate.getValue(),newBookSubject.getText(),
+                    Integer.parseInt(newBookNumbers.getText()));
         }
         else {
-            Funcs.AddNewBook(Login.con,newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText()));
+            Funcs.AddNewBook(Login.con,newBookTitle.getText(),newBookAuthor.getText(),
+                    publishedDate.getValue(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText()));
         }
-        DataCollection.observableBookList.add(new Book(Funcs.GetBookTableId(Login.con,newBookTitle.getText()),newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue().toString(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText())));
+        DataCollection.observableBookList.add(new Book(Funcs.GetBookTableId(Login.con,newBookTitle.getText()),newBookTitle.getText(),
+                newBookAuthor.getText(),publishedDate.getValue().toString(),
+                newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText())));
         BookList_C.book = null;
     }
 }

@@ -604,6 +604,7 @@ public  class Funcs {
     public static boolean EditBook(Connection con,int tableId,String title,String author,LocalDate publishedYear,String subject,int numberOfBooks)throws Exception
     {
         String sel="SELECT * FROM Books WHERE ID=?";
+        System.out.println("TableID:    "+tableId);
         PreparedStatement ps=con.prepareStatement(sel);
         ps.setInt(1,tableId);
         ResultSet rs=ps.executeQuery();
@@ -630,6 +631,7 @@ public  class Funcs {
         ps.setString(4,subject);
         ps.setInt(5,numberOfBooks);
         ps.setInt(6,tableId);
+        System.out.println(ps.toString());
         ps.executeUpdate();
         return true;
     }
