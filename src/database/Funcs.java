@@ -634,7 +634,6 @@ public  class Funcs {
         return true;
     }
 
-
     public static int GetBookTableId(Connection con,String bookName) throws Exception
     {
         if(IsEmptyOrNull(bookName))
@@ -649,7 +648,6 @@ public  class Funcs {
         }
         return 0;
     }
-
 
     public static boolean DeleteBook(Connection con,int id)throws Exception
     {

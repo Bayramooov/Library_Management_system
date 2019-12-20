@@ -141,22 +141,18 @@ public class Readers_C {
         tableView.getColumns().addAll(nameColumn, IDColumn, passwordColumn);
         tableView.setEditable(true);
     }
-    private void flushTableView()
-    {
-        tableView.getItems().removeAll();
-        tableView.setItems(DataCollection.observableSearchingUsersList);
-    }
+
     public void onSearchButtonPressed(ActionEvent actionEvent) throws Exception
     {
         if(MainFrame.pressedPanel.equals("Readers"))
-           Funcs.SearchUsers(Login.con, UserType.Reader,false,searchText.getText());
+            Funcs.SearchUsers(Login.con, UserType.Reader,false,searchText.getText());
         else if(MainFrame.pressedPanel.equals("Blocked Readers"))
             Funcs.SearchUsers(Login.con, UserType.Reader,true,searchText.getText());
         else if(MainFrame.pressedPanel.equals("Librarians"))
             Funcs.SearchUsers(Login.con, UserType.Librarian,false,searchText.getText());
         else
             throw new Exception("Error");
-        flushTableView();
+        tableView.setItems(DataCollection.observableSearchingUsersList);
     }
 
 

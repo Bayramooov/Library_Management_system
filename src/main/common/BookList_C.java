@@ -15,8 +15,7 @@ import main.DataCollection;
 import java.io.IOException;
 import java.util.Optional;
 
-import static main.DataCollection.currentUser;
-import static main.DataCollection.observableReadersList;
+import static main.DataCollection.*;
 
 
 public class BookList_C {
@@ -80,22 +79,20 @@ public class BookList_C {
       tableView.getColumns().addAll(titleColumn, authorColumn, subjectColumn);
   }
 
-    private void searchingBooks() throws Exception {
+    private void searchingBooks() throws Exception
+    {
       Funcs.SearchBooks(Login.con,this.searchingText.getText());
-      tableView.getItems().removeAll();
       tableView.setItems(DataCollection.observableSearchingBooksList);
 
-  }
+    }
 
     private void searchingBorrowedBooks(boolean isItReadersFrame) throws Exception
     {
       if(isItReadersFrame)
           Funcs.SearchBorrowedBooksOfReader(Login.con,DataCollection.currentUser.TableId,this.searchingText.getText());
-
       else
           Funcs.SearchBorrowedBooks(Login.con,this.searchingText.getText());
 
-      tableView.getItems().clear();
       tableView.setItems(DataCollection.observableSearchingBorrowedBooksList);
   }
 
@@ -144,21 +141,16 @@ public class BookList_C {
       tableView.getColumns().addAll(titleColumn, IDColumn, borrowedDateColumn, returnedDateColumn);
   }
 
-    public void handleSearchButton(ActionEvent actionEvent) throws Exception {
-//
+    public void handleSearchButton(ActionEvent actionEvent) throws Exception
+    {
         if(MainFrame.pressedPanel.equals("Books"))
-        {
             searchingBooks();
-        }
         else if(MainFrame.pressedPanel.equals("Borrowed Books"))
-        {
             searchingBorrowedBooks(false);
-        }
         else if(MainFrame.pressedPanel.equals("My Books"))
-        {
             searchingBorrowedBooks(true);
-        }
     }
+
     public void returnBorrowedBook(MouseEvent mouseEvent) {
         BorrowedBook b = (BorrowedBook)tableView.getSelectionModel().getSelectedItem();
         ContextMenu contextMenu = new ContextMenu();
@@ -220,5 +212,4 @@ public class BookList_C {
         });
         }
     }
-
 }
