@@ -51,24 +51,28 @@ public class creatingFrame {
 
     public void initialize() {
         if(MainFrame.pressedPanel.equals("Edit User")) {
-            newUserName.setText(Readers_C.chosenUserInTable.Name);
-            newUserID.setText(Readers_C.chosenUserInTable.ID);
-            newUserPass.setText(Readers_C.chosenUserInTable.Password);
-            newUserType.getSelectionModel().clearAndSelect(Readers_C.chosenUserInTable.getUType() == UserType.Reader?1:0);
-            newUserCreateButton.setText("Change");
+            if(Readers_C.chosenUserInTable != null) {
+                newUserName.setText(Readers_C.chosenUserInTable.Name);
+                newUserID.setText(Readers_C.chosenUserInTable.ID);
+                newUserPass.setText(Readers_C.chosenUserInTable.Password);
+                newUserType.getSelectionModel().clearAndSelect(Readers_C.chosenUserInTable.getUType() == UserType.Reader?1:0);
+                newUserCreateButton.setText("Change");
+            }
         }
         else if(MainFrame.pressedPanel.equals("Edit Book")) {
-            newBookAuthor.setText(BookList_C.book.Author);
-            newBookTitle.setText(BookList_C.book.Title);
-            newBookSubject.setText(BookList_C.book.Subject);
-            newBookNumbers.setText("" + BookList_C.book.AvailableBooks);
-            newBooksCreateButton.setText("Change");
+            if(BookList_C.book != null) {
+                newBookAuthor.setText(BookList_C.book.Author);
+                newBookTitle.setText(BookList_C.book.Title);
+                newBookSubject.setText(BookList_C.book.Subject);
+                newBookNumbers.setText("" + BookList_C.book.AvailableBooks);
+                newBooksCreateButton.setText("Change");
+            }
         }
     }
 
 
     public void handleCreateNewUserButton(ActionEvent actionEvent) throws Exception {
-
+        System.out.println(newUserType.getSelectionModel().getSelectedItem());
         if(MainFrame.pressedPanel.equals("New User")) {
             if(newUserType.getSelectionModel().getSelectedItem().equals("Reader")) {
                 Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Reader);
@@ -77,15 +81,14 @@ public class creatingFrame {
                 Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Librarian);
                 DataCollection.observableLibrarianList.add(Funcs.LoginUser(Login.con,newUserID.getText(),newUserPass.getText()));
             }
-        } else {
-
+        } else if (Readers_C.chosenUserInTable != null){
             if(newUserType.getSelectionModel().getSelectedItem().equals("Reader")) {
             DataCollection.observableReadersList.remove(Readers_C.chosenUserInTable);
-            Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Reader);
+            Funcs.EditUser(Login.con,Readers_C.chosenUserInTable.TableId,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Reader);
             DataCollection.observableReadersList.add(Funcs.LoginUser(Login.con,newUserID.getText(),newUserPass.getText()));
             } else {
                 DataCollection.observableLibrarianList.remove(Readers_C.chosenUserInTable);
-                Funcs.AddNewUser(Login.con,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Librarian);
+                Funcs.EditUser(Login.con,Readers_C.chosenUserInTable.TableId,newUserID.getText(),newUserPass.getText(),newUserName.getText(), UserType.Librarian);
                 DataCollection.observableLibrarianList.add(Funcs.LoginUser(Login.con,newUserID.getText(),newUserPass.getText()));
             }
         }
@@ -96,9 +99,11 @@ public class creatingFrame {
     public void handleCreateBookButton(ActionEvent actionEvent) throws Exception {
         if(MainFrame.pressedPanel.equals("Edit Book")) {
             DataCollection.observableBookList.remove(BookList_C.book);
+            Funcs.EditBook(Login.con,Funcs.GetBookTableId(Login.con,newBookTitle.getText()),newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText()));
         }
-
-        Funcs.AddNewBook(Login.con,newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText()));
+        else {
+            Funcs.AddNewBook(Login.con,newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText()));
+        }
         DataCollection.observableBookList.add(new Book(Funcs.GetBookTableId(Login.con,newBookTitle.getText()),newBookTitle.getText(),newBookAuthor.getText(),publishedDate.getValue().toString(),newBookSubject.getText(),Integer.parseInt(newBookNumbers.getText())));
         BookList_C.book = null;
     }

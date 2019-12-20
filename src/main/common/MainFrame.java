@@ -153,17 +153,20 @@ public class MainFrame {
         if(pressedPanel.equals("Readers")) {
             if(DataCollection.currentUser.getUType() == database.UserType.Admin) {
                 panelName.setText("New User");
+                pressedPanel = "New User";
                 GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/UserViewFrame.fxml"));
                 mainFrame.setCenter(dashboardPanel);
             }
         }
         else if(pressedPanel.equals("Librarians")) {
             panelName.setText("New User");
+            pressedPanel = "New User";
             GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/UserViewFrame.fxml"));
             mainFrame.setCenter(dashboardPanel);
         }
         else if(pressedPanel.equals("Books")) {
             panelName.setText("New Book");
+            pressedPanel = "New Book";
             GridPane dashboardPanel = FXMLLoader.load(getClass().getResource("/main/common/BookViewFrame.fxml"));
             mainFrame.setCenter(dashboardPanel);
         }

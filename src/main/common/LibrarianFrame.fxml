@@ -55,7 +55,7 @@
                   <Font name="SansSerif" size="14.0"/>
                </font>
             </Button>
-            <Button fx:id="headerBorder_addButton" text="Add" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
+            <Button fx:id="headerBorder_addButton" onAction="#handleAddButton" text="Add" mnemonicParsing="false" GridPane.columnIndex="3" GridPane.rowIndex="1">
                <font>
                   <Font name="SansSerif" size="14.0"/>
                </font>
