@@ -59,19 +59,22 @@ public class BookList_C {
 
     private void initBooks() throws Exception {
       TableColumn<database.Book, String> titleColumn = new TableColumn<>("Title");
-      titleColumn.setMinWidth(250.0);
-      titleColumn.setMaxWidth(250.0);
+      titleColumn.setMinWidth(300.0);
+      titleColumn.setPrefWidth(370.0);
+      titleColumn.setMaxWidth(500.0);
       titleColumn.setCellValueFactory(new PropertyValueFactory<>("Title"));
 
 
       TableColumn<database.Book, String> authorColumn = new TableColumn<>("Author");
-      authorColumn.setMinWidth(250.0);
-      authorColumn.setMaxWidth(250.0);
+      authorColumn.setMinWidth(200.0);
+      authorColumn.setPrefWidth(220.0);
+      authorColumn.setMaxWidth(300.0);
       authorColumn.setCellValueFactory(new PropertyValueFactory<>("Author"));
 
       TableColumn<database.Book, String> subjectColumn = new TableColumn<>("Subject");
-      subjectColumn.setMinWidth(250.0);
-      subjectColumn.setMaxWidth(250.0);
+      subjectColumn.setMinWidth(100.0);
+      subjectColumn.setPrefWidth(167.0);
+      subjectColumn.setMaxWidth(100.0);
       subjectColumn.setCellValueFactory(new PropertyValueFactory<>("Subject"));
       tableView.setItems(DataCollection.observableBookList);
       tableView.getColumns().addAll(titleColumn, authorColumn, subjectColumn);
@@ -99,18 +102,18 @@ public class BookList_C {
     private void initMyBooks() {
 
       TableColumn<database.BorrowedBook, String> titleColumn = new TableColumn<>("Title");
-      titleColumn.setMinWidth(280.0);
-      titleColumn.setMaxWidth(280.0);
+      titleColumn.setMinWidth(363.0);
+      titleColumn.setMaxWidth(363.0);
       titleColumn.setCellValueFactory(new PropertyValueFactory<>("Book"));
 
       TableColumn<database.BorrowedBook, String> borrowedDateColumn = new TableColumn<>("Borrowed Date");
-      borrowedDateColumn.setMinWidth(250.0);
-      borrowedDateColumn.setMaxWidth(250.0);
+      borrowedDateColumn.setMinWidth(200.0);
+      borrowedDateColumn.setMaxWidth(200.0);
       borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("BorrowedDate"));
 
       TableColumn<database.BorrowedBook, String> returnedDateColumn = new TableColumn<>("Return Date");
-      returnedDateColumn.setMinWidth(250.0);
-      returnedDateColumn.setMaxWidth(250.0);
+      returnedDateColumn.setMinWidth(200.0);
+      returnedDateColumn.setMaxWidth(200.0);
       returnedDateColumn.setCellValueFactory(new PropertyValueFactory<>("ReturnDate"));
       tableView.setItems(DataCollection.observableMyBookList);
       tableView.getColumns().addAll(titleColumn, borrowedDateColumn, returnedDateColumn);
@@ -119,26 +122,26 @@ public class BookList_C {
     private void initBorrowedBooks() {
 
       TableColumn<database.BorrowedBook, String> IDColumn = new TableColumn<>("Borrower ID");
-      IDColumn.setMinWidth(280.0);
-      IDColumn.setMaxWidth(280.0);
+      IDColumn.setMinWidth(110.0);
+      IDColumn.setMaxWidth(110.0);
       IDColumn.setCellValueFactory(new PropertyValueFactory<>("UserId"));
 
       TableColumn<database.BorrowedBook, String> titleColumn = new TableColumn<>("Title");
-      titleColumn.setMinWidth(280.0);
-      titleColumn.setMaxWidth(280.0);
+      titleColumn.setMinWidth(383.0);
+      titleColumn.setMaxWidth(383.0);
       titleColumn.setCellValueFactory(new PropertyValueFactory<>("Book"));
 
       TableColumn<database.BorrowedBook, String> borrowedDateColumn = new TableColumn<>("Borrowed Date");
-      borrowedDateColumn.setMinWidth(250.0);
-      borrowedDateColumn.setMaxWidth(250.0);
+      borrowedDateColumn.setMinWidth(135.0);
+      borrowedDateColumn.setMaxWidth(135.0);
       borrowedDateColumn.setCellValueFactory(new PropertyValueFactory<>("BorrowedDate"));
 
       TableColumn<database.BorrowedBook, String> returnedDateColumn = new TableColumn<>("Return Date");
-      returnedDateColumn.setMinWidth(250.0);
-      returnedDateColumn.setMaxWidth(250.0);
+      returnedDateColumn.setMinWidth(135.0);
+      returnedDateColumn.setMaxWidth(135.0);
       returnedDateColumn.setCellValueFactory(new PropertyValueFactory<>("ReturnDate"));
       tableView.setItems(DataCollection.observableBorrowedBookList);
-      tableView.getColumns().addAll(titleColumn, borrowedDateColumn, returnedDateColumn);
+      tableView.getColumns().addAll(titleColumn, IDColumn, borrowedDateColumn, returnedDateColumn);
   }
 
     public void handleSearchButton(ActionEvent actionEvent) throws Exception {

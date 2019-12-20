@@ -116,18 +116,19 @@ public class Readers_C {
     }
 
     private void initUsers(String string) {
-        TableColumn<User, String> IDColumn = new TableColumn<>("ID");
-        IDColumn.setMinWidth(200.0); IDColumn.setMaxWidth(200.0);
-        IDColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
-
 
         TableColumn<User, String> nameColumn = new TableColumn<>("Name");
-        nameColumn.setMinWidth(280.0); IDColumn.setMaxWidth(280.0);
+        nameColumn.setMinWidth(436.0); nameColumn.setMaxWidth(436.0);
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("Name"));
 
+        TableColumn<User, String> IDColumn = new TableColumn<>("ID");
+        IDColumn.setMinWidth(120.0); IDColumn.setMaxWidth(120.0);
+        IDColumn.setCellValueFactory(new PropertyValueFactory<>("ID"));
+
         TableColumn<User, String> passwordColumn = new TableColumn<>("Password");
-        passwordColumn.setMinWidth(280.0); IDColumn.setMaxWidth(280.0);
+        passwordColumn.setMinWidth(207.0); passwordColumn.setMaxWidth(207.0);
         passwordColumn.setCellValueFactory(new PropertyValueFactory<>("Password"));
+
         if(string.equals("readers")) {
             tableView.setItems(DataCollection.observableReadersList);
         }
@@ -135,10 +136,9 @@ public class Readers_C {
             tableView.setItems(DataCollection.observableBlockedReadersList);
         }
         else {
-
             tableView.setItems(DataCollection.observableLibrarianList);
         }
-        tableView.getColumns().addAll(IDColumn, nameColumn, passwordColumn);
+        tableView.getColumns().addAll(nameColumn, IDColumn, passwordColumn);
         tableView.setEditable(true);
     }
     private void flushTableView()

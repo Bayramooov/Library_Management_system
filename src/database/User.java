@@ -1,5 +1,7 @@
 package database;
 
+import main.common.Login;
+
 public class User  {
     public int TableId;
     public String Name;
@@ -12,7 +14,7 @@ public class User  {
     public User(int tableId,String name,String id,String password,UserType type)
     {
         this.TableId=tableId;
-        this.Name=name;
+        this.Name= Login.capitalizeString(name).trim();
         this.ID=id;
         this.Password=password;
         this.UType=type;

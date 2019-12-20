@@ -38,7 +38,7 @@
             </padding>
         </VBox>
         <VBox GridPane.rowIndex="1">
-            <TableView fx:id="tableView" focusTraversable="false" prefHeight="500.0"  prefWidth="767.0" style="-fx-font-family: 'SansSerif'; -fx-font-size: 20" onMouseClicked="#handleMouseClick">
+            <TableView fx:id="tableView" focusTraversable="false" prefHeight="500.0"  prefWidth="767.0" style="-fx-font-family: 'SansSerif'; -fx-font-size: 15" onMouseClicked="#handleMouseClick">
             </TableView>
         </VBox>
     </children>
